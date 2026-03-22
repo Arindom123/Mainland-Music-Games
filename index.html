@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mainland Music Apps</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        .hidden { display: none; }
+        .menu-btn { margin: 10px; padding: 15px 30px; font-size: 18px; cursor: pointer; }
+        .back-btn { margin-bottom: 20px; padding: 10px 20px; cursor: pointer; }
+        img { max-width: 100%; height: auto; border: 2px solid #ccc; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    
+    <!-- Main Menu Screen -->
+    <div id="menu-screen">
+        <h1>Select Your Instrument</h1>
+        <button class="menu-btn" onclick="selectInstrument('Glockenspiel')">Glockenspiel</button>
+        <button class="menu-btn" onclick="selectInstrument('Marimba')">Marimba</button>
+        <button class="menu-btn" onclick="selectInstrument('Xylophone')">Xylophone</button>
+        <button class="menu-btn" onclick="selectInstrument('Vibraphone')">Vibraphone</button>
+        
+        <br><br><hr><br>
+        <p>Testing Tools:</p>
+        <button id="Audio-Record">Test Microphone</button>
+    </div>
+
+    <!-- Instrument Display Screen -->
+    <div id="instrument-screen" class="hidden">
+        <h1 id="instrument-title">Instrument Name</h1>
+        <button class="back-btn" onclick="showMenu()">← Back to Menu</button>
+        
+        <div style="background: #f4f4f4; padding: 15px; margin: 15px auto; border-radius: 8px; max-width: 400px;">
+            <h3>Metronome</h3>
+            <input type="number" id="tempo-input" value="120" min="40" max="240" onchange="updateTempo()"> BPM
+            <button onclick="toggleMetronome()" id="metronome-btn">Start</button>
+        </div>
+
+        <div style="background: #e9f5ff; padding: 15px; margin: 15px auto; border-radius: 8px; max-width: 400px;">
+            <h3>Scale Practice</h3>
+            <select id="scale-select" onchange="startScale()">
+                <option value="">-- Choose a Scale --</option>
+                <option value="C Major">C Major</option>
+                <option value="G Major">G Major</option>
+            </select>
+            <h2 id="current-note-display">Select a scale to begin!</h2>
+            
+            <div id="mock-instrument" style="margin-top: 10px;">
+                <p style="margin-bottom: 5px; font-size: 12px; color: #555;"><i>Simulate playing a note:</i></p>
+                <button onclick="hitNote('C')">C</button> <button onclick="hitNote('D')">D</button>
+                <button onclick="hitNote('E')">E</button> <button onclick="hitNote('F')">F</button> <button onclick="hitNote('F#')">F#</button>
+                <button onclick="hitNote('G')">G</button> <button onclick="hitNote('A')">A</button> <button onclick="hitNote('B')">B</button>
+            </div>
+        </div>
+
+        <br>
+        <img id="instrument-image" src="" alt="Instrument Image">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
