@@ -6,7 +6,7 @@
 </head>
 <body>
     <header>
-        <img src="assets/marimba-image.png" alt="Mainland Music Logo">
+        <img src="assets/marimba.png" alt="Mainland Music Logo">
     </header>
     <div class="homepage">
     <main>
@@ -27,6 +27,42 @@
             <img src="assets/github-cat.png" alt="Arindom's GitHub">
         </button>
     </footer>
+    </div>
+    <div class="free-play">
+        <h1>Scale Selection</h1>
+        <label for="Roots">Roots</label>
+            <select name="Roots" id="Roots">
+            <option value="C">C</option>
+            <option value="C#">C#/D♭</option>
+            <option value="D">D</option>
+            <option value="D#">D#/E♭</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#">F#/G♭</option>
+            <option value="G">G</option>
+            <option value="G#">G#/A♭</option>
+            <option value="A">A</option>
+            <option value="A#">A#/B♭</option>
+            <option value="B">B</option>
+            </select>
+        <div class="scale-type">
+            <button type="button">Major</button>
+            <button type="button">Minor</button>
+            <button type="button">Pentatonic</button>
+            <button type="button">Blues</button>
+            <button type="button">Chromatic</button>
+        </div>
+        <div class="minor-variations">
+            <h1>Minor Variations</h1>
+            <button type="button" class="minor-button" disabled>Natural</button>
+            <button type="button" class="minor-button" disabled>Harmonic</button>
+            <button type="button" class="minor-button" disabled>Melodic</button>
+        </div>
+        <div class="metronome">
+            <label for="bpm">Tempo:</label>
+            <input type="number" id="bpm" name="bpm" min="1" max="999">
+            <span>bpm</span>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
