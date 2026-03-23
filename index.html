@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!--call CSS, tab title-->
     <link href="style.css" rel="stylesheet">
     <title>Mainland Music Games</title>
 </head>
 <body>
-    <header>
-        <img src="assets/marimba.png" alt="Mainland Music Logo">
+    <header> <!--constant home button-->
+        <img id="home-logo" src="assets/marimba.png" alt="Mainland Music Logo">
     </header>
-    <div class="homepage">
+    <div class="homepage"> <!--home page HTML div-->
     <main>
         <div class="homepage-titles">
             <h1>Mainland Music Games</h1>
@@ -22,16 +23,19 @@
         </div>
     </main>
     <footer>
-        <p>By Arindom Paul<br>MRHS Class of 2026</p>
+        <p>By: Arindom Paul<br>Mainland Tri-M</p>
         <button type="button">
-            <img src="assets/github-cat.png" alt="Arindom's GitHub">
+            <img id="github" src="assets/github-cat.png" alt="Arindom's GitHub">
         </button>
     </footer>
-    </div>
-    <div class="free-play">
+    </div> <!--end home screen div-->
+    <div class="free-play"> <!--free play screen div-->
         <h1>Scale Selection</h1>
         <label for="Roots">Roots</label>
             <select name="Roots" id="Roots">
+            <option value="A">A</option>
+            <option value="A#">A#/B♭</option>
+            <option value="B">B</option>
             <option value="C">C</option>
             <option value="C#">C#/D♭</option>
             <option value="D">D</option>
@@ -41,9 +45,6 @@
             <option value="F#">F#/G♭</option>
             <option value="G">G</option>
             <option value="G#">G#/A♭</option>
-            <option value="A">A</option>
-            <option value="A#">A#/B♭</option>
-            <option value="B">B</option>
             </select>
         <div class="scale-type">
             <button type="button">Major</button>
@@ -63,7 +64,7 @@
             <input type="number" id="bpm" name="bpm" min="1" max="999">
             <span>bpm</span>
         </div>
-    </div>
-    <script src="script.js"></script>
+    </div> <!--end free play screen div-->
+    <script src="script.js"></script> <!--call javascript-->
 </body>
 </html>
