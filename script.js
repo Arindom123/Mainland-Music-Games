@@ -1,3 +1,4 @@
+let scaleType = "";
 const naturalNotes = ["A","B","C","D","E","F","G"];
 const accidentals = ["A#","C#","D#","F#","G#"];
 function fillRungs () {
@@ -20,3 +21,7 @@ function fillRungs () {
     }
 }
 fillRungs();
+function generateScale (roots, scaleType)
+{
+
+}
