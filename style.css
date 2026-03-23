@@ -6,3 +6,24 @@
 #github {
     cursor: pointer;
 }
+#instrument-selection {
+    cursor: pointer;
+}
+.rung {
+    width: 70px;
+    height: 200px;
+    background: brown;
+    margin: 2px;
+}
+.accidentals {
+    width: 70px;
+    height: 180px;
+    background: yellow;
+    margin: 2px;
+    position: absolute;
+    z-index: 1;
+}
+#instrument-board {
+    display: flex;
+    position: relative;
+}
