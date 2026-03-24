@@ -1,6 +1,6 @@
 let scaleType = "";
 let minorVar = "";
-let roots = "";
+let roots = document.getElementById("Roots");
 const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
 const homeButton = document.getElementById("home-logo");
@@ -41,6 +41,7 @@ fillRungs(); //testing fillRungs function
 function generateScale (roots, scaleType) //generate the scale
 {
     const startingNoteIndex = chromaticScale.indexOf(roots);
+    console.log("This is what the computer thinks the index for root A is" + startingNoteIndex);
     let newScale = [];
     if (scaleType == scaleMajor)
     {
@@ -51,7 +52,11 @@ function generateScale (roots, scaleType) //generate the scale
     }
     console.log(newScale);
 }
-roots.addEventListener()
+roots.addEventListener("change", function()
+{
+    const rootsCurrent = roots.value;
+    generateScale(roots, scaleType);
+});
 homeButton.addEventListener("click", function()
 {
     freePlayDiv.classList.add('hidden');
