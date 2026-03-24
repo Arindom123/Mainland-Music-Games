@@ -5,6 +5,8 @@
 }
 #github {
     cursor: pointer;
+    width: 70px;
+    height: auto;
 }
 #instrument-selection {
     cursor: pointer;
@@ -26,4 +28,15 @@
 #instrument-board {
     display: flex;
     position: relative;
+}
+.hidden {
+    display: none
+}
+/* body {
+    background-color: black;
+} */
+.scale-type button:disabled {
+    background-color: aqua;
+    box-shadow: none;
+    transform: translateY(1px);
 }

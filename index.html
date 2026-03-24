@@ -6,7 +6,7 @@
     <title>Mainland Music Games</title>
 </head>
 <body>
-    <header> <!--constant home button-->
+    <header> <!--constant home anchor-->
         <img id="home-logo" src="assets/marimba.png" alt="Mainland Music Logo">
     </header>
     <div class="homepage"> <!--home page HTML div-->
@@ -16,22 +16,23 @@
             <h2>Percussion Family</h2>
         </div>
         <div class="instrument-selection">
-            <button type="button">Marimba</button>
-            <button type="button">Xylophone</button>
-            <button type="button">Vibraphone</button>
-            <button type="button">Bells</button>
+            <button id = "marimba" type="button">Marimba</button>
+            <button id = "xylophone" type="button">Xylophone</button>
+            <button id = "vibraphone" type="button">Vibraphone</button>
+            <button id = "bells" type="button">Bells</button>
         </div>
     </main>
     <footer>
         <p>By: Arindom Paul<br>Mainland Tri-M</p>
-        <button type="button">
-            <img id="github" src="assets/github-cat.png" alt="Arindom's GitHub">
-        </button>
+        <a
+            href = "https://github.com/Arindom123" target = "_blank">
+            <img id = "github" src="assets/github-cat-black.png" alt="Check out my work!">
+        </a>
     </footer>
     </div> <!--end home screen div-->
     <div class="free-play"> <!--free play screen div-->
         <h1>Scale Selection</h1>
-        <label for="Roots">Roots</label>
+        <label for="Roots">Roots</label> <!--root selection for scale generation-->
             <select name="Roots" id="Roots">
             <option value="A">A</option>
             <option value="A#">A#/B♭</option>
@@ -46,18 +47,18 @@
             <option value="G">G</option>
             <option value="G#">G#/A♭</option>
             </select>
-        <div id= "scaleType" class="scale-type">
-            <button type="button">Major</button>
-            <button type="button">Minor</button>
-            <button type="button">Pentatonic</button>
-            <button type="button">Blues</button>
-            <button type="button">Chromatic</button>
+        <div id= "scaleType" class="scale-type"> <!--scaletype selection for scale generation-->
+            <button id = "scaleMajor" type="button">Major</button>
+            <button id = "scaleMinor" type="button">Minor</button>
+            <button id = "scalePentatonic" type="button">Pentatonic</button>
+            <button id = "scaleBlues" type="button">Blues</button>
+            <button id = "scaleChromatic" type="button">Chromatic</button>
         </div>
-        <div class="minor-variations">
+        <div id = "minor-variations" class="minor-variations"> <!--minor variation for scale generation-->
             <h1>Minor Variations</h1>
-            <button type="button" class="minor-button" disabled>Natural</button>
-            <button type="button" class="minor-button" disabled>Harmonic</button>
-            <button type="button" class="minor-button" disabled>Melodic</button>
+            <button id = "naturalVariation" type="button" class="minor-button" disabled>Natural</button>
+            <button id = "harmonicVariation" type="button" class="minor-button" disabled>Harmonic</button>
+            <button id = "melodicVariation" type="button" class="minor-button" disabled>Melodic</button>
         </div>
         <div class="metronome">
             <label for="bpm">Tempo:</label>
