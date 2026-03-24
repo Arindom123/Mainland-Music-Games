@@ -1,6 +1,7 @@
 let scaleType = "";
 let minorVar = "";
-let roots = document.getElementById("Roots");
+let rootsID = document.getElementById("Roots");
+let roots = rootsID.value;
 const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
 const homeButton = document.getElementById("home-logo");
@@ -40,21 +41,26 @@ function fillRungs () { //this is the illustration of the mallet instrument
 fillRungs(); //testing fillRungs function
 function generateScale (roots, scaleType) //generate the scale
 {
-    const startingNoteIndex = chromaticScale.indexOf(roots);
-    console.log("This is what the computer thinks the index for root A is" + startingNoteIndex);
     let newScale = [];
+    let currentIndex = chromaticScale.indexOf(roots);
+    newScale.push(chromaticScale[currentIndex]);
     if (scaleType == scaleMajor)
     {
-    for (let i = 0; i<8; i++)
+    for (let i = 0; i<7; i++)
     {
-        newScale.push(chromaticScale[startingNoteIndex+majorPattern[i]]);
+        currentIndex+=majorPattern[i];
+        if (currentIndex > 11)
+        {
+            currentIndex-=12;
+        }
+        newScale.push(chromaticScale[currentIndex]);
     }
     }
     console.log(newScale);
 }
-roots.addEventListener("change", function()
+rootsID.addEventListener("change", function()
 {
-    const rootsCurrent = roots.value;
+    roots = rootsID.value;
     generateScale(roots, scaleType);
 });
 homeButton.addEventListener("click", function()
@@ -97,7 +103,7 @@ scaleMajor.addEventListener("click", function()
     document.getElementById("naturalVariation").disabled = true;
     document.getElementById("harmonicVariation").disabled = true;
     document.getElementById("melodicVariation").disabled = true;
-    generateScale(document.getElementById("Roots"), scaleType);
+    generateScale(roots, scaleType);
 });
 scaleMinor.addEventListener("click", function()
 {
@@ -110,7 +116,7 @@ scaleMinor.addEventListener("click", function()
     document.getElementById("naturalVariation").disabled = false;
     document.getElementById("harmonicVariation").disabled = false;
     document.getElementById("melodicVariation").disabled = false;
-    generateScale(document.getElementById("Roots"), scaleType);
+    generateScale(roots, scaleType);
 });
 scalePentatonic.addEventListener("click", function()
 {
@@ -123,7 +129,7 @@ scalePentatonic.addEventListener("click", function()
     document.getElementById("naturalVariation").disabled = true;
     document.getElementById("harmonicVariation").disabled = true;
     document.getElementById("melodicVariation").disabled = true;
-    generateScale(document.getElementById("Roots"), scaleType);
+    generateScale(roots, scaleType);
 });
 scaleBlues.addEventListener("click", function()
 {
@@ -136,7 +142,7 @@ scaleBlues.addEventListener("click", function()
     document.getElementById("naturalVariation").disabled = true;
     document.getElementById("harmonicVariation").disabled = true;
     document.getElementById("melodicVariation").disabled = true;
-    generateScale(document.getElementById("Roots"), scaleType);
+    generateScale(roots, scaleType);
 });
 scaleChromatic.addEventListener("click", function()
 {
@@ -149,5 +155,5 @@ scaleChromatic.addEventListener("click", function()
     document.getElementById("naturalVariation").disabled = true;
     document.getElementById("harmonicVariation").disabled = true;
     document.getElementById("melodicVariation").disabled = true;
-    generateScale(document.getElementById("Roots"), scaleType);
+    generateScale(roots, scaleType);
 });
