@@ -6,7 +6,7 @@
     <title>Mainland Music Games</title>
 </head>
 <body>
-    <header> <!--constant home anchor-->
+    <header> <!--constant home button-->
         <img id="home-logo" src="assets/marimba.png" alt="Mainland Music Logo">
     </header>
     <div class="homepage"> <!--home page HTML div-->
@@ -31,8 +31,8 @@
     </footer>
     </div> <!--end home screen div-->
     <div class="free-play"> <!--free play screen div-->
-        <h1>Scale Selection</h1>
-        <label for="Roots">Roots</label> <!--root selection for scale generation-->
+        <h1>Scales</h1>
+        <label for="Roots">Root:</label> <!--root selection-->
             <select name="Roots" id="Roots">
             <option value="A">A</option>
             <option value="Bb">A#/B♭</option>
@@ -47,18 +47,26 @@
             <option value="G">G</option>
             <option value="Ab">G#/A♭</option>
             </select>
-        <div id= "scaleType" class="scale-type"> <!--scaletype selection for scale generation-->
-            <button id = "scaleMajor" type="button">Major</button>
-            <button id = "scaleMinor" type="button">Minor</button>
-            <button id = "scalePentatonic" type="button">Pentatonic</button>
-            <button id = "scaleBlues" type="button">Blues</button>
-            <button id = "scaleChromatic" type="button">Chromatic</button>
+        <div id= "scaleType" class="scale-type"> <!--scaletype selection-->
+            <button class = "scaleType" id = "scaleMajor" type="button">Major</button>
+            <button class = "scaleType" id = "scaleMinor" type="button">Minor</button>
+            <button class = "scaleType" id = "scalePentatonic" type="button">Pentatonic</button>
+            <button class = "scaleType" id = "scaleBlues" type="button">Blues</button>
+            <button class = "scaleType" id = "scaleChromatic" type="button">Chromatic</button>
         </div>
-        <div id = "minor-variations" class="minor-variations"> <!--minor variation for scale generation-->
-            <h1>Minor Variations</h1>
-            <button id = "naturalVariation" type="button" class="minor-button" disabled>Natural</button>
-            <button id = "harmonicVariation" type="button" class="minor-button" disabled>Harmonic</button>
-            <button id = "melodicVariation" type="button" class="minor-button" disabled>Melodic</button>
+        <div id = "variations" class="variations"> <!--scale variations-->
+            <div id = "header">
+            <h1>Variations</h1>
+            </div>
+            <div class = minorVariationsButtons>
+            <button class = "variations" class = "minorVariation" id = "naturalVariation" type="button" hidden>Natural</button>
+            <button class = "variations" class = "minorVariation" id = "harmonicVariation" type="button" hidden>Harmonic</button>
+            <button class = "variations" class = "minorVariation" id = "melodicVariation" type="button" hidden>Melodic</button>
+            </div>
+            <div class = bluesPentatonicVariationsButtons>
+            <button class = "variations" class = "bluesPentatonicVariation" id = "majorVariation" type="button" hidden>Major</button>
+            <button class = "variations" class = "bluesPentatonicVariation" id = "minorVariation" type ="button" hidden>Minor</button>
+            </div>
         </div>
         <div class="metronome">
             <label for="bpm">Tempo:</label>

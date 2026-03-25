@@ -40,3 +40,6 @@
     box-shadow: none;
     transform: translateY(1px);
 }
+#header {
+    visibility: hidden;
+}
