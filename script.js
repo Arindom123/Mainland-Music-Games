@@ -8,11 +8,18 @@ const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
 const minorVariationsButtons = document.querySelector(".minorVariationsButtons");
 const bluesPentatonicVariationsButtons = document.querySelector(".bluesPentatonicVariationsButtons");
-// buttons for instrument selection
-const marimbaButton = document.getElementById("marimba");
-const vibraphoneButton = document.getElementById("vibraphone");
-const bellsButton = document.getElementById("bells");
-const xylophoneButton = document.getElementById("xylophone");
+// get instruments
+const instruments = document.querySelectorAll(".instrument");
+instruments.forEach(instrumentButtons);
+function instrumentButtons (button)
+{
+    button.addEventListener("click", function ()
+    {
+    freePlayDiv.classList.add('show');
+    freePlayDiv.classList.remove('hidden');
+    homePageDiv.classList.add('hidden');
+    });
+}
 // home button
 const homeButton = document.getElementById("home-logo");
 // buttons for scale type
