@@ -48,24 +48,24 @@
             <option value="Ab">G#/A♭</option>
             </select>
         <div id= "scaleType" class="scale-type"> <!--scaletype selection-->
-            <button class = "scaleType" id = "scaleMajor" type="button">Major</button>
-            <button class = "scaleType" id = "scaleMinor" type="button">Minor</button>
-            <button class = "scaleType" id = "scalePentatonic" type="button">Pentatonic</button>
-            <button class = "scaleType" id = "scaleBlues" type="button">Blues</button>
-            <button class = "scaleType" id = "scaleChromatic" type="button">Chromatic</button>
+            <button class = "scaleType" id = "scaleMajor" type="button" data-pattern = "majorPattern" data-variation = "false" >Major</button>
+            <button class = "scaleType" id = "scaleMinor" type="button" data-pattern = "none" data-variation = "naturalMelodicHarmonic" >Minor</button>
+            <button class = "scaleType" id = "scalePentatonic" type="button" data-pattern = "none" data-variation = "minorMajor" >Pentatonic</button>
+            <button class = "scaleType" id = "scaleBlues" type="button" data-pattern = "none" data-variation = "minorMajor" >Blues</button>
+            <button class = "scaleType" id = "scaleChromatic" type="button" data-pattern = "chromaticPattern" data-variation = "false" >Chromatic</button>
         </div>
         <div id = "variations" class="variations"> <!--scale variations-->
             <div id = "header">
             <h1>Variations</h1>
             </div>
-            <div class = minorVariationsButtons>
-            <button class = "variations" class = "minorVariation" id = "naturalVariation" type="button" hidden>Natural</button>
-            <button class = "variations" class = "minorVariation" id = "harmonicVariation" type="button" hidden>Harmonic</button>
-            <button class = "variations" class = "minorVariation" id = "melodicVariation" type="button" hidden>Melodic</button>
+            <div class = minorVariations>
+            <button class = "minorVariation" id = "naturalVariation" type="button" hidden>Natural</button>
+            <button class = "minorVariation" id = "harmonicVariation" type="button" hidden>Harmonic</button>
+            <button class = "minorVariation" id = "melodicVariation" type="button" hidden>Melodic</button>
             </div>
-            <div class = bluesPentatonicVariationsButtons>
-            <button class = "variations" class = "bluesPentatonicVariation" id = "majorVariation" type="button" hidden>Major</button>
-            <button class = "variations" class = "bluesPentatonicVariation" id = "minorVariation" type ="button" hidden>Minor</button>
+            <div class = bluesPentatonicVariations>
+            <button class = "bluesPentatonicVariation" id = "majorVariation" type="button" hidden>Major</button>
+            <button class = "bluesPentatonicVariation" id = "minorVariation" type ="button" hidden>Minor</button>
             </div>
         </div>
         <div class="metronome">

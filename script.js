@@ -1,28 +1,21 @@
+// html groupings for home page, free play page, minor variations buttons, & blues/pentatonic buttons
+const homePageDiv = document.querySelector(".homepage");
+const freePlayDiv = document.querySelector(".free-play");
+//hide free-play screen & buttons on loadup
+freePlayDiv.classList.add('hidden');
 // get root dropdown ID
 const rootsID = document.getElementById("Roots");
 // scale variables
 let roots = rootsID.value;
 let scalePattern = "";
-// html groupings for home page, free play page, minor variations buttons, & blues/pentatonic buttons
-const homePageDiv = document.querySelector(".homepage");
-const freePlayDiv = document.querySelector(".free-play");
-const minorVariationsButtons = document.querySelector(".minorVariationsButtons");
-const bluesPentatonicVariationsButtons = document.querySelector(".bluesPentatonicVariationsButtons");
-// get instruments
+// get instruments buttons
 const instruments = document.querySelectorAll(".instrument");
 instruments.forEach(instrumentButtons);
-function instrumentButtons (button)
-{
-    button.addEventListener("click", function ()
-    {
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
-    });
-}
 // home button
 const homeButton = document.getElementById("home-logo");
 // buttons for scale type
+const scaleTypeButtons = document.querySelectorAll(".scaleType");
+scaleTypeButtons.forEach(scaleButtonsGeneration);
 const scaleMajor = document.getElementById("scaleMajor");
 const scaleMinor = document.getElementById("scaleMinor");
 const scalePentatonic = document.getElementById("scalePentatonic");
@@ -34,6 +27,10 @@ const minorVariation = document.getElementById("minorVariation");
 const naturalVariation = document.getElementById("naturalVariation");
 const harmonicVariation = document.getElementById("harmonicVariation");
 const melodicVariation = document.getElementById("melodicVariation");
+const minorVariations = document.querySelector(".minorVariations");
+const bluesPentatonicVariations = document.querySelector(".bluesPentatonicVariations");
+minorVariations.classList.add('hidden');
+bluesPentatonicVariations.classList.add('hidden');
 // notes for rung generation
 const naturalNotes = ["A","B","C","D","E","F","G"];
 const accidentals = ["A#","C#","D#","F#","G#"];
@@ -47,11 +44,44 @@ const minorMelodicPattern = [2,1,2,2,2,2,1];
 const minorBluesPattern = [3,2,1,1,3,2];
 const minorPentatonicPattern = [3,2,2,3,2];
 const chromaticPattern = [1,1,1,1,1,1,1,1,1,1,1,1];
-//hide free-play screen & buttons on loadup
-freePlayDiv.classList.add('hidden');
-minorVariationsButtons.classList.add('hidden');
-bluesPentatonicVariationsButtons.classList.add('hidden');
-// illustrate mallet instrument
+// add logic for instrument buttons
+function instrumentButtons (button)
+{
+    button.addEventListener("click", function ()
+    {
+    freePlayDiv.classList.add('show');
+    freePlayDiv.classList.remove('hidden');
+    homePageDiv.classList.add('hidden');
+    });
+}
+// add logic for scale buttons
+function scaleButtonsGeneration (scale) {
+    scale.addEventListener("click", function()
+    {
+    if (scale.data-pattern != false)
+    {
+        scalePattern = scale.getAttribute('data-scale');
+    }
+    document.getElementsByClassName("scaleType").disabled = false;
+    scale.disabled = true;
+    generateScale(roots, scalePattern);
+    if (scale.data-variation == "none")
+    {
+    document.getElementsByClassName("variations").disabled = true;
+    }
+    if (scale.data-variation == "minorMajor")
+        {
+            document.getElementsByClassName(minorVariations).disabled = false;
+            document.getElementsByClassName(bluesPentatonicVariations).disabled = true;
+        }
+        else
+        {
+            document.getElementsByClassName(bluesPentatonicVariations).disabled = false;
+            document.getElementsByClassName(minorVariations).disabled = true;
+        }
+    });
+}
+// illustrate mallet rungs
 function fillRungs () { 
     const board = document.getElementById('instrument-board');
     for (let i = 0; i<naturalNotes.length; i++)
@@ -101,76 +131,17 @@ homeButton.addEventListener("click", function()
     freePlayDiv.classList.add('hidden');
     homePageDiv.classList.remove('hidden');
 });
-// instrument selection event listener
-marimbaButton.addEventListener("click", function()
-{
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
-});
-xylophoneButton.addEventListener("click", function()
-{
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
-});
-bellsButton.addEventListener("click", function()
-{
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
-});
-vibraphoneButton.addEventListener("click", function()
-{
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
-});
 // scale type event listener
-scaleMajor.addEventListener("click", function()
-{
-    scalePattern = majorPattern;
-    document.getElementsByClassName("scaleType").disabled = false;
-    document.getElementById("scaleMajor").disabled = true;
-    generateScale(roots, scalePattern);
-    document.getElementsByClassName("variations").disabled = true;
-});
-scaleMinor.addEventListener("click", function()
-{
-    document.getElementsByClassName("scaleType").disabled = false;
-    document.getElementById("scaleMinor").disabled = true;
-    variations();
-});
-scalePentatonic.addEventListener("click", function()
-{
-    document.getElementsByClassName("scaleType").disabled = false;
-    document.getElementById("scalePentatonic").disabled = true;
-    variations();
-});
-scaleBlues.addEventListener("click", function()
-{
-    document.getElementsByClassName("scaleType").disabled = false;
-    document.getElementById("scaleBlues").disabled = true;
-    variations();
-});
-scaleChromatic.addEventListener("click", function()
-{
-    scalePattern = chromaticPattern;
-    document.getElementsByClassName("scaleType").disabled = false;
-    document.getElementById("scaleChromatic").disabled = true;
-    document.getElementsByClassName("variations").disabled = true;
-    generateScale(roots, scalePattern);
-});
 function variations () {
     if (document.getElementById("scaleMinor").disabled == true)
     {
         document.getElementsByClassName("minorVariation").disabled = false;
-        minorVariationsButtons.classList.remove('hidden');
+        minorVariations.classList.remove('hidden');
     }
     else if (document.getElementById("scalePentatonic") || document.getElementById("scaleBlues"))
     {
         document.getElementsByClassName("bluesPentatonicVariation").disabled = false;
-        bluesPentatonicVariationsButtons.classList.remove('hidden');
+        bluesPentatonicVariations.classList.remove('hidden');
     }
 }
 naturalVariation.addEventListener("click", function()
