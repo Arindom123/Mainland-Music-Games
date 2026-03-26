@@ -1,3 +1,11 @@
+// scale pattern for each scale type
+const majorPattern = [2,2,1,2,2,2,1];
+const minorNaturalPattern = [2,1,2,2,1,2,2];
+const minorHarmonicPattern = [2,1,2,2,1,3,1];
+const minorMelodicPattern = [2,1,2,2,2,2,1];
+const minorBluesPattern = [3,2,1,1,3,2];
+const minorPentatonicPattern = [3,2,2,3,2];
+const chromaticPattern = [1,1,1,1,1,1,1,1,1,1,1,1];
 // html groupings for home page, free play page, minor variations buttons, & blues/pentatonic buttons
 const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
@@ -8,19 +16,13 @@ const rootsID = document.getElementById("Roots");
 // scale variables
 let roots = rootsID.value;
 let scalePattern = "";
-// get instruments buttons
+// instrument buttons & scale type buttons
 const instruments = document.querySelectorAll(".instrument");
 instruments.forEach(instrumentButtons);
-// home button
-const homeButton = document.getElementById("home-logo");
-// buttons for scale type
 const scaleTypeButtons = document.querySelectorAll(".scaleType");
 scaleTypeButtons.forEach(scaleButtonsGeneration);
-const scaleMajor = document.getElementById("scaleMajor");
-const scaleMinor = document.getElementById("scaleMinor");
-const scalePentatonic = document.getElementById("scalePentatonic");
-const scaleBlues = document.getElementById("scaleBlues");
-const scaleChromatic = document.getElementById("scaleChromatic");
+// home button
+const homeButton = document.getElementById("home-logo");
 // buttons for scale variation
 const majorVariation = document.getElementById("majorVariation");
 const minorVariation = document.getElementById("minorVariation");
@@ -36,14 +38,6 @@ const naturalNotes = ["A","B","C","D","E","F","G"];
 const accidentals = ["A#","C#","D#","F#","G#"];
 // chromatic scale for scale generation
 const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
-// scale pattern for each scale type
-const majorPattern = [2,2,1,2,2,2,1];
-const minorNaturalPattern = [2,1,2,2,1,2,2];
-const minorHarmonicPattern = [2,1,2,2,1,3,1];
-const minorMelodicPattern = [2,1,2,2,2,2,1];
-const minorBluesPattern = [3,2,1,1,3,2];
-const minorPentatonicPattern = [3,2,2,3,2];
-const chromaticPattern = [1,1,1,1,1,1,1,1,1,1,1,1];
 // add logic for instrument buttons
 function instrumentButtons (button)
 {
@@ -58,26 +52,21 @@ function instrumentButtons (button)
 function scaleButtonsGeneration (scale) {
     scale.addEventListener("click", function()
     {
-    if (scale.data-pattern != false)
-    {
-        scalePattern = scale.getAttribute('data-scale');
-    }
+    document.getElementsByClassName("variations").disabled = true;
     document.getElementsByClassName("scaleType").disabled = false;
     scale.disabled = true;
-    generateScale(roots, scalePattern);
-    if (scale.data-variation == "none")
+    if (scale.getAttribute('data-pattern') != false)
     {
-    document.getElementsByClassName("variations").disabled = true;
+        scalePattern = scale.getAttribute('data-scale');
+        generateScale(roots, scalePattern);
     }
-    if (scale.data-variation == "minorMajor")
+    if (scale.getAttribute('data-variation') == "minorMajor")
         {
             document.getElementsByClassName(minorVariations).disabled = false;
-            document.getElementsByClassName(bluesPentatonicVariations).disabled = true;
         }
         else
         {
             document.getElementsByClassName(bluesPentatonicVariations).disabled = false;
-            document.getElementsByClassName(minorVariations).disabled = true;
         }
     });
 }
