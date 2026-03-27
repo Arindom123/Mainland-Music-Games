@@ -87,6 +87,7 @@ instruments.forEach(instrumentButtons);
 const homeButton = document.getElementById("home-logo");
 // chromatic scale for scale generation
 const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
+const chromaticScaleSecondOctave = ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"];
 // add logic for instrument buttons
 function instrumentButtons (button)
 {
@@ -101,9 +102,13 @@ function instrumentButtons (button)
 // illustrate mallet rungs
 function fillRungs () { 
     let boardDiv = document.getElementById('instrument-board');
-    for (let i = 0; i<chromaticScale.length; i++)
+    for (let i = 0; i<(chromaticScale.length + chromaticScaleSecondOctave.length); i++)
     {
         const newRung = document.createElement('div');
+        if (i>7)
+        {
+            newRung.id = chromaticScaleSecondOctave[i];
+        }
         newRung.id = chromaticScale[i];
         newRung.classList.add('rung');
         if (newRung.id.includes('b'))
@@ -121,21 +126,26 @@ function fillRungs () {
 function playScale ()
 {
     const board = document.getElementById('instrument-board').querySelectorAll('.rung');
-    for (let i = 0; i<board.length; i++)
+    for (let i = 0; i<currentScale.length; i++)
     {
         setTimeout(() => {
-            // Remove 'selected' class from all rungs
             board.forEach(rung => rung.classList.remove('selected'));
-            // Add 'selected' class to the current rung
-            board[i].classList.add('selected');
-        }, i * 500); // Adjust the delay (500ms) as needed
-
+            if (currentScale[i].includes('2'))
+            {
+            document.getElementById(currentScaleSecondOctave[i]).classList.add('selected');
+            }
+            else
+            {
+            document.getElementById(currentScale[i]).classList.add('selected');                
+            }
+        }, i * 500); //500 ms
     }
 }
 // scale generation by root and pattern
 function generateScale (roots, scalePattern) 
 {
     let currentIndex = chromaticScale.indexOf(roots);
+    currentScale.length = 0;
     currentScale.push(chromaticScale[currentIndex]);
     for (let i = 0; i<scalePattern.length; i++)
     {
@@ -143,6 +153,10 @@ function generateScale (roots, scalePattern)
         if (currentIndex > 11)
         {
             currentIndex-=12;
+        }
+        if (currentScale.length > 7)
+        {
+        currentScale.push(chromaticScaleSecondOctave[currentIndex]);
         }
         currentScale.push(chromaticScale[currentIndex]);
     }
@@ -160,5 +174,6 @@ homeButton.addEventListener("click", function()
 });
 startButton.addEventListener("click", function()
 {
+    console.log(currentScale);
     playScale();
 });
