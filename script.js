@@ -7,6 +7,7 @@ scalePatternsMap.set("minorMelodicPattern", [2,1,2,2,2,2,1]);
 scalePatternsMap.set("minorBluesPattern", [3,2,1,1,3,2]);
 scalePatternsMap.set("minorPentatonicPattern", [3,2,2,3,2]);
 scalePatternsMap.set("chromaticPattern", [1,1,1,1,1,1,1,1,1,1,1,1]);
+startButton = document.getElementById("startButton");
 let currentScale = [];
 let scaleType = "";
 const scaleButtons = document.querySelectorAll(".scales button");
@@ -98,22 +99,27 @@ function instrumentButtons (button)
 }
 // illustrate mallet rungs
 function fillRungs () { 
-    const board = document.getElementById('instrument-board');
+    let boardDiv = document.getElementById('instrument-board');
     for (let i = 0; i<currentScale.length; i++)
     {
         const newRung = document.createElement('div');
         newRung.classList.add('rung');
-        newRung.id = currentScale[i];
-        if (currentScale[i].includes("b"))
-        {
-        board.append(newRung);
-        const leftMargin = 80*(i+1)-45;
-        newRung.style.marginLeft = leftMargin + "px";
-        }
-        else
-        {
-        board.append(newRung);
-        }
+        newRung.id = chromaticScale[i];
+        boardDiv.append(newRung);
+    }
+}
+function playScale ()
+{
+    const board = document.getElementById('instrument-board').querySelectorAll('.rung');
+    for (let i = 0; i<board.length; i++)
+    {
+        setTimeout(() => {
+            // Remove 'selected' class from all rungs
+            board.forEach(rung => rung.classList.remove('selected'));
+            // Add 'selected' class to the current rung
+            board[i].classList.add('selected');
+        }, i * 500); // Adjust the delay (500ms) as needed
+
     }
 }
 // scale generation by root and pattern
@@ -142,4 +148,8 @@ homeButton.addEventListener("click", function()
 {
     freePlayDiv.classList.add('hidden');
     homePageDiv.classList.remove('hidden');
+});
+startButton.addEventListener("click", function()
+{
+    playScale();
 });

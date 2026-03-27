@@ -17,14 +17,6 @@
     background: brown;
     margin: 2px;
 }
-.accidentals {
-    width: 70px;
-    height: 180px;
-    background: yellow;
-    margin: 2px;
-    position: absolute;
-    z-index: 1;
-}
 #instrument-board {
     display: flex;
     position: relative;
@@ -42,4 +34,7 @@
 }
 #header {
     visibility: hidden;
+}
+.selected {
+    background: yellow;
 }
