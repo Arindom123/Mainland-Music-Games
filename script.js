@@ -1,14 +1,77 @@
 // scale pattern for each scale type
-const majorPattern = [2,2,1,2,2,2,1];
-const minorNaturalPattern = [2,1,2,2,1,2,2];
-const minorHarmonicPattern = [2,1,2,2,1,3,1];
-const minorMelodicPattern = [2,1,2,2,2,2,1];
-const minorBluesPattern = [3,2,1,1,3,2];
-const minorPentatonicPattern = [3,2,2,3,2];
-const chromaticPattern = [1,1,1,1,1,1,1,1,1,1,1,1];
+const scalePatternsMap = new Map();
+scalePatternsMap.set("majorPattern", [2,2,1,2,2,2,1]);
+scalePatternsMap.set("minorNaturalPattern", [2,1,2,2,1,2,2]);
+scalePatternsMap.set("minorHarmonicPattern", [2,1,2,2,1,3,1]);
+scalePatternsMap.set("minorMelodicPattern", [2,1,2,2,2,2,1]);
+scalePatternsMap.set("minorBluesPattern", [3,2,1,1,3,2]);
+scalePatternsMap.set("minorPentatonicPattern", [3,2,2,3,2]);
+scalePatternsMap.set("chromaticPattern", [1,1,1,1,1,1,1,1,1,1,1,1]);
+let currentScale = [];
+let scaleType = "";
+const scaleButtons = document.querySelectorAll(".scales button");
+scaleButtons.forEach(assignScalePattern);
+function minorToMajor(scalePattern)
+{
+    let placeholder = scalePattern[0];
+    scalePattern.splice(0,1);
+    scalePattern.push(placeholder);
+    return scalePattern;
+}
+function enableButtons (button)
+{
+    button.disabled = false;
+}
+function assignScalePattern (scaleButton)
+{
+    scaleButton.addEventListener("click", function()
+{
+    scaleButtons.forEach(enableButtons);
+    if (scaleButton.classList.contains("scaleType"))
+    {
+    minorVariationsDiv.classList.add('hidden');
+    minorMajorDiv.classList.add('hidden');
+    scaleType = scaleButton.id;
+    }
+    document.getElementById(scaleType).disabled = true;
+    scaleButton.disabled = true;
+    scalePattern = scaleButton.getAttribute('data-pattern');
+    if (scaleType == "scalePentatonic" || scaleType == "scaleBlues")
+    {
+        minorMajorDiv.classList.remove('hidden');
+        if (scalePattern == "major" || scalePattern == "minor")
+        {
+            if (scaleType == "scalePentatonic")
+            {
+            scalePattern = "minorPentatonicPattern";
+            }
+            else
+            {
+                scalePattern = "minorBluesPattern";
+            }
+            if (scalePattern == "major")
+            {
+                scalePattern = minorToMajor(scalePatternsMap.get(scalePattern));
+            }
+        }
+            
+    }
+    if (scaleType == "scaleMinor")
+    {
+        minorVariationsDiv.classList.remove('hidden');
+    }
+    if (scalePattern != "none")
+    {
+        generateScale(roots,scalePatternsMap.get(scalePattern));
+    }
+});
+}
 // html groupings for home page, free play page, minor variations buttons, & blues/pentatonic buttons
 const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
+const scaleButtonsDiv = document.querySelector(".scales");
+const minorMajorDiv = document.querySelector(".minorMajorVariations");
+const minorVariationsDiv = document.querySelector(".minorVariations");
 //hide free-play screen & buttons on loadup
 freePlayDiv.classList.add('hidden');
 // get root dropdown ID
@@ -19,23 +82,8 @@ let scalePattern = "";
 // instrument buttons & scale type buttons
 const instruments = document.querySelectorAll(".instrument");
 instruments.forEach(instrumentButtons);
-const scaleTypeButtons = document.querySelectorAll(".scaleType");
-scaleTypeButtons.forEach(scaleButtonsGeneration);
 // home button
 const homeButton = document.getElementById("home-logo");
-// buttons for scale variation
-const majorVariation = document.getElementById("majorVariation");
-const minorVariation = document.getElementById("minorVariation");
-const naturalVariation = document.getElementById("naturalVariation");
-const harmonicVariation = document.getElementById("harmonicVariation");
-const melodicVariation = document.getElementById("melodicVariation");
-const minorVariations = document.querySelector(".minorVariations");
-const bluesPentatonicVariations = document.querySelector(".bluesPentatonicVariations");
-minorVariations.classList.add('hidden');
-bluesPentatonicVariations.classList.add('hidden');
-// notes for rung generation
-const naturalNotes = ["A","B","C","D","E","F","G"];
-const accidentals = ["A#","C#","D#","F#","G#"];
 // chromatic scale for scale generation
 const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
 // add logic for instrument buttons
@@ -48,56 +96,31 @@ function instrumentButtons (button)
     homePageDiv.classList.add('hidden');
     });
 }
-// add logic for scale buttons
-function scaleButtonsGeneration (scale) {
-    scale.addEventListener("click", function()
-    {
-    document.getElementsByClassName("variations").disabled = true;
-    document.getElementsByClassName("scaleType").disabled = false;
-    scale.disabled = true;
-    if (scale.getAttribute('data-pattern') != false)
-    {
-        scalePattern = scale.getAttribute('data-scale');
-        generateScale(roots, scalePattern);
-    }
-    if (scale.getAttribute('data-variation') == "minorMajor")
-        {
-            document.getElementsByClassName(minorVariations).disabled = false;
-        }
-        else
-        {
-            document.getElementsByClassName(bluesPentatonicVariations).disabled = false;
-        }
-    });
-}
 // illustrate mallet rungs
 function fillRungs () { 
     const board = document.getElementById('instrument-board');
-    for (let i = 0; i<naturalNotes.length; i++)
+    for (let i = 0; i<currentScale.length; i++)
     {
         const newRung = document.createElement('div');
         newRung.classList.add('rung');
-        newRung.id = naturalNotes[i];
-        board.append(newRung);
-    }
-    for (let i = 0; i<accidentals.length; i++)
-    {
-        const newRung =document.createElement('div');
-        newRung.classList.add('accidentals');
-        newRung.id = accidentals[i];
+        newRung.id = currentScale[i];
+        if (currentScale[i].includes("b"))
+        {
         board.append(newRung);
         const leftMargin = 80*(i+1)-45;
         newRung.style.marginLeft = leftMargin + "px";
+        }
+        else
+        {
+        board.append(newRung);
+        }
     }
 }
-// testing fillRungs function
-fillRungs(); 
 // scale generation by root and pattern
 function generateScale (roots, scalePattern) 
 {
-    let newScale = [];
     let currentIndex = chromaticScale.indexOf(roots);
-    newScale.push(chromaticScale[currentIndex]);
+    currentScale.push(chromaticScale[currentIndex]);
     for (let i = 0; i<scalePattern.length; i++)
     {
         currentIndex+=scalePattern[i];
@@ -105,9 +128,9 @@ function generateScale (roots, scalePattern)
         {
             currentIndex-=12;
         }
-        newScale.push(chromaticScale[currentIndex]);
+        currentScale.push(chromaticScale[currentIndex]);
     }
-    console.log(newScale);
+    fillRungs();
 }
 // record updates to root dropdown
 rootsID.addEventListener("change", function()
@@ -120,52 +143,3 @@ homeButton.addEventListener("click", function()
     freePlayDiv.classList.add('hidden');
     homePageDiv.classList.remove('hidden');
 });
-// scale type event listener
-function variations () {
-    if (document.getElementById("scaleMinor").disabled == true)
-    {
-        document.getElementsByClassName("minorVariation").disabled = false;
-        minorVariations.classList.remove('hidden');
-    }
-    else if (document.getElementById("scalePentatonic") || document.getElementById("scaleBlues"))
-    {
-        document.getElementsByClassName("bluesPentatonicVariation").disabled = false;
-        bluesPentatonicVariations.classList.remove('hidden');
-    }
-}
-naturalVariation.addEventListener("click", function()
-{
-    scalePattern = minorNaturalPattern;
-    document.getElementsByClassName("minorVariation").disabled = false;
-    document.getElementById("naturalVariation").disabled = true;
-    generateScale(roots, scalePattern);
-});
-melodicVariation.addEventListener("click", function()
-{
-    scalePattern = minorMelodicPattern;
-    document.getElementsByClassName("minorVariation").disabled = false;
-    document.getElementById("melodicVariation").disabled = true;
-    generateScale(roots, scalePattern);
-});
-harmonicVariation.addEventListener("click", function()
-{
-    scalePattern = minorHarmonicPattern;
-    document.getElementsByClassName("minorVariation").disabled = false;
-    document.getElementById("harmonicVariation").disabled = true;
-    generateScale(roots, scalePattern);
-});
-minorVariation.addEventListener("click", function()
-{
-    document.getElementsByClassName("bluesPentatonicVariation").disabled = false;
-    document.getElementById("minorVariation").disabled = true;
-    if (document.getElementById("scalePentatonic").disabled == true)
-    {
-        scalePattern = minorPentatonicPattern;
-        
-    }
-    else
-    {
-        scalePattern = minorBluesPattern;
-    }
-    generateScale(roots, scalePattern);
-})

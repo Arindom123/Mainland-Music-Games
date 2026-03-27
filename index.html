@@ -47,32 +47,34 @@
             <option value="G">G</option>
             <option value="Ab">G#/A♭</option>
             </select>
-        <div id= "scaleType" class="scale-type"> <!--scaletype selection-->
-            <button class = "scaleType" id = "scaleMajor" type="button" data-pattern = "majorPattern" data-variation = "false" >Major</button>
-            <button class = "scaleType" id = "scaleMinor" type="button" data-pattern = "none" data-variation = "naturalMelodicHarmonic" >Minor</button>
-            <button class = "scaleType" id = "scalePentatonic" type="button" data-pattern = "none" data-variation = "minorMajor" >Pentatonic</button>
-            <button class = "scaleType" id = "scaleBlues" type="button" data-pattern = "none" data-variation = "minorMajor" >Blues</button>
-            <button class = "scaleType" id = "scaleChromatic" type="button" data-pattern = "chromaticPattern" data-variation = "false" >Chromatic</button>
-        </div>
-        <div id = "variations" class="variations"> <!--scale variations-->
-            <div id = "header">
-            <h1>Variations</h1>
+        <div class = "scales">
+            <div id= "scaleType"> <!--scaletype selection-->
+            <button class = "scaleType" id = "scaleMajor" type="button" data-pattern = "majorPattern" >Major</button>
+            <button class = "scaleType" id = "scaleMinor" type="button" data-pattern = "none" >Minor</button>
+            <button class = "scaleType" id = "scalePentatonic" type="button" data-pattern = "none" >Pentatonic</button>
+            <button class = "scaleType" id = "scaleBlues" type="button" data-pattern = "none" >Blues</button>
+            <button class = "scaleType" id = "scaleChromatic" type="button" data-pattern = "chromaticPattern" >Chromatic</button>
             </div>
+            <div class="variations"> <!--scale variations-->
+                <div id = "header">
+                <h1>Variations</h1>
+                </div>
             <div class = minorVariations>
-            <button class = "minorVariation" id = "naturalVariation" type="button" hidden>Natural</button>
-            <button class = "minorVariation" id = "harmonicVariation" type="button" hidden>Harmonic</button>
-            <button class = "minorVariation" id = "melodicVariation" type="button" hidden>Melodic</button>
+            <button class = minorVariations id = "naturalVariation" type="button" data-pattern = "minorNaturalPattern" >Natural</button>
+            <button class = minorVariations id = "harmonicVariation" type="button" data-pattern = "minorHarmonicPattern" >Harmonic</button>
+            <button class = minorVariations id = "melodicVariation" type="button" data-pattern = "minorMelodicPattern" >Melodic</button>
             </div>
-            <div class = bluesPentatonicVariations>
-            <button class = "bluesPentatonicVariation" id = "majorVariation" type="button" hidden>Major</button>
-            <button class = "bluesPentatonicVariation" id = "minorVariation" type ="button" hidden>Minor</button>
+            <div class = minorMajorVariations>
+            <button class = minorMajorVariations id = "majorVariation" type="button" data-pattern="major">Major</button>
+            <button class = minorMajorVariations id = "minorVariation" type ="button" data-pattern ="minor">Minor</button>
+            </div>
             </div>
         </div>
-        <div class="metronome">
+       <!-- <div class="metronome">
             <label for="bpm">Tempo:</label>
             <input type="number" id="bpm" name="bpm" min="1" max="999">
             <span>bpm</span>
-        </div>
+        </div> -->
         <div id="instrument-board"></div> <!--empty div for js-->
     </div> <!--end free play screen div-->
     <script src="script.js"></script> <!--call javascript-->
