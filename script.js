@@ -18,7 +18,6 @@ function minorToMajor(scalePattern)
     scalePattern.splice(0,1);
     scalePattern.push(placeholder);
     return scalePattern;
-    fillRungs();
 }
 function enableButtons (button)
 {
@@ -96,7 +95,7 @@ function instrumentButtons (button)
     freePlayDiv.classList.add('show');
     freePlayDiv.classList.remove('hidden');
     homePageDiv.classList.add('hidden');
-    
+    fillRungs();
     });
 }
 // illustrate mallet rungs
@@ -106,20 +105,18 @@ function fillRungs () {
     {
         const newRung = document.createElement('div');
         newRung.id = chromaticScale[i];
-        if (newRung.id.contains('b'))
+        newRung.classList.add('rung');
+        if (newRung.id.includes('b'))
         {
         let referenceRung = document.getElementById(chromaticScale[i-1]);
         const refLeft = referenceRung.offsetLeft;
         const refTop = referenceRung.offsetTop;
-        newRung.style.left = `${refLeft}px`;
-        newRung.style.top = `${refTop}px`;
-        }
-        else {
-        newRung.classList.add('naturalRungs');
+        newRung.style.position = 'absolute';
+        newRung.style.left = `${refLeft+30}px`;
+        newRung.style.top = `${refTop-165}px`;
         }
         boardDiv.append(newRung);
     }
-
 }
 function playScale ()
 {

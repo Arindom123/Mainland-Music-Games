@@ -14,19 +14,18 @@
 .rung {
     width: 70px;
     height: 200px;
+    border: 1px solid black;
     background: brown;
     margin: 2px;
 }
 #instrument-board {
     display: flex;
     position: relative;
+    margin-top: 200px;
 }
 .hidden {
     display: none
 }
-/* body {
-    background-color: black;
-} */
 .scale-type button:disabled {
     background-color: aqua;
     box-shadow: none;
@@ -37,7 +36,4 @@
 }
 .selected {
     background: yellow;
-}
-.accidental {
-    
 }
