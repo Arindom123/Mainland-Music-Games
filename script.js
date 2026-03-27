@@ -18,6 +18,7 @@ function minorToMajor(scalePattern)
     scalePattern.splice(0,1);
     scalePattern.push(placeholder);
     return scalePattern;
+    fillRungs();
 }
 function enableButtons (button)
 {
@@ -95,18 +96,30 @@ function instrumentButtons (button)
     freePlayDiv.classList.add('show');
     freePlayDiv.classList.remove('hidden');
     homePageDiv.classList.add('hidden');
+    
     });
 }
 // illustrate mallet rungs
 function fillRungs () { 
     let boardDiv = document.getElementById('instrument-board');
-    for (let i = 0; i<currentScale.length; i++)
+    for (let i = 0; i<chromaticScale.length; i++)
     {
         const newRung = document.createElement('div');
-        newRung.classList.add('rung');
         newRung.id = chromaticScale[i];
+        if (newRung.id.contains('b'))
+        {
+        let referenceRung = document.getElementById(chromaticScale[i-1]);
+        const refLeft = referenceRung.offsetLeft;
+        const refTop = referenceRung.offsetTop;
+        newRung.style.left = `${refLeft}px`;
+        newRung.style.top = `${refTop}px`;
+        }
+        else {
+        newRung.classList.add('naturalRungs');
+        }
         boardDiv.append(newRung);
     }
+
 }
 function playScale ()
 {
@@ -136,7 +149,6 @@ function generateScale (roots, scalePattern)
         }
         currentScale.push(chromaticScale[currentIndex]);
     }
-    fillRungs();
 }
 // record updates to root dropdown
 rootsID.addEventListener("change", function()
