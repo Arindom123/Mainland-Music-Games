@@ -7,17 +7,15 @@ scalePatternsMap.set("minorMelodicPattern", [2, 1, 2, 2, 2, 2, 1]);
 scalePatternsMap.set("minorBluesPattern", [3, 2, 1, 1, 3, 2]);
 scalePatternsMap.set("minorPentatonicPattern", [3, 2, 2, 3, 2]);
 scalePatternsMap.set("chromaticPattern", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
-
+const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B",];
+let newChromaticScale = [...chromaticScale];
 const startButton = document.getElementById("startButton");
 let currentScale = [];
 let scaleType = "";
 const scaleButtons = document.querySelectorAll(".scales button");
 scaleButtons.forEach(assignScalePattern);
 
-// --- Logic Functions ---
-
 function minorToMajor(scalePattern) {
-    // Clone the array so we don't permanently break the Map data
     let newPattern = [...scalePattern];
     let placeholder = newPattern.shift();
     newPattern.push(placeholder);
@@ -68,9 +66,6 @@ function assignScalePattern(scaleButton) {
         }
     });
 }
-
-// --- UI Elements ---
-
 const homePageDiv = document.querySelector(".homepage");
 const freePlayDiv = document.querySelector(".free-play");
 const minorMajorDiv = document.querySelector(".minorMajorVariations");
@@ -83,45 +78,43 @@ let roots = rootsID.value;
 const instruments = document.querySelectorAll(".instrument");
 instruments.forEach(instrumentButtons);
 
-const homeButton = document.getElementById("home-logo");
-
-// Note Pools
-const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
-const chromaticScaleSecondOctave = ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2"];
-
 function instrumentButtons(button) {
     button.addEventListener("click", function () {
         freePlayDiv.classList.add('show');
         freePlayDiv.classList.remove('hidden');
         homePageDiv.classList.add('hidden');
-        fillRungs();
+        fillRungs(button.getAttribute("data-startingNote"), Number(button.getAttribute(("data-octaves")),
+        button.getAttribute("startingOctave"));
     });
 }
 
-// --- The Core Systems ---
+const homeButton = document.getElementById("home-logo");
 
-function fillRungs() {
+function addOctaves(startingNote, numOctaves, startingOctave)
+{
+    for (let i = 0; i<numOctaves%1; i++)
+    {
+        newChromaticScale.push(chromaticScale[chromaticScale.indexOf(startingNote)]+startingOctave);
+    }
+    for (let i = 0; i<numOctaves; i++)
+    {
+        for (let j = 0; j<chromaticScale.length; j++)
+        {
+            newChromaticScale.push(chromaticScale[j]+(startingOctave + i + 1));
+        }
+    }
+}
+
+function fillRungs(startingNote, numOctaves, startingOctave) {
     let boardDiv = document.getElementById('instrument-board');
     boardDiv.innerHTML = ""; 
-
-    for (let i = 0; i < (chromaticScale.length + chromaticScaleSecondOctave.length); i++) {
+    addOctaves(startingNote, numOctaves, startingOctave);
+    for (let i = 0; i < (newChromaticScale.length); i++) {
         const newRung = document.createElement('div');
-        
-        // Fixed ID mapping for 24 rungs
-        if (i > 11) {
-            newRung.id = chromaticScaleSecondOctave[i - 12];
-        } else {
-            newRung.id = chromaticScale[i];
-        }
-
+        newRung.id = newChromaticScale[i+startingIndex];
         newRung.classList.add('rung');
-
-        // Original spacing logic
         if (newRung.id.includes('b')) {
-            // Find reference (natural note to the left)
-            let refId = i > 11 ? chromaticScaleSecondOctave[i - 13] : chromaticScale[i - 1];
-            let referenceRung = document.getElementById(refId);
-            
+            let referenceRung = document.getElementById(newChromaticScale[i - 1]);
             if (referenceRung) {
                 const refLeft = referenceRung.offsetLeft;
                 const refTop = referenceRung.offsetTop;
@@ -139,22 +132,10 @@ function generateScale(roots, scalePattern) {
     currentScale = [];
     currentScale.push(chromaticScale[currentIndex]);
 
-    let octaveShift = false;
-
-    // Correct 1-octave generation (exactly 8 notes)
     for (let i = 0; i < scalePattern.length; i++) {
         currentIndex += scalePattern[i];
-        
-        // If we pass B, everything from here on is the second octave
         if (currentIndex > 11) {
-            currentIndex -= 12;
-            octaveShift = true; 
-        }
-
-        if (octaveShift) {
-            currentScale.push(chromaticScaleSecondOctave[currentIndex]);
-        } else {
-            currentScale.push(chromaticScale[currentIndex]);
+            currentIndex -= 11; 
         }
     }
 }
@@ -174,8 +155,6 @@ function playScale() {
     }
 }
 
-// --- Global Listeners ---
-
 rootsID.addEventListener("change", function () {
     roots = rootsID.value;
 });
@@ -188,18 +167,13 @@ homeButton.addEventListener("click", function () {
 startButton.addEventListener("click", function() {
     console.log("Scale to Play:", currentScale);
     
-    // Disable the button so the user doesn't click it twice during the delay
     startButton.disabled = true;
 
     // 2000ms = 2 seconds
     setTimeout(() => {
         playScale();
-        
-        // Optional: Re-enable the button after the scale finishes 
-        // (currentScale.length * 500ms is the total play time)
         setTimeout(() => {
             startButton.disabled = false;
         }, currentScale.length * 500);
-
     }, 2000); 
 });
