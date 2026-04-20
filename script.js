@@ -84,7 +84,7 @@ function instrumentButtons(button) {
         freePlayDiv.classList.remove('hidden');
         homePageDiv.classList.add('hidden');
         fillRungs(button.getAttribute("data-startingNote"), Number(button.getAttribute(("data-octaves")),
-        button.getAttribute("startingOctave"));
+        button.getAttribute("startingOctave")));
     });
 }
 
