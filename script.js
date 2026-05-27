@@ -103,7 +103,7 @@ function fillRungs () {
                 accidentalRungDiv.append(newRung);
                 if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
                 {
-                    newRung.style.marginRight = "70px";
+                    newRung.style.marginRight = "63px";
                 }
             }
             else
@@ -116,17 +116,29 @@ function fillRungs () {
 
 function playScale (root, scalePattern, octaves)
 {
-    let scale = generateScale(root, scalePattern, octaves);
-    const rungs = document.querySelectorAll('.rungs');
-    for (let i = 0; i<scale.length; i++)
-    {
-        setTimeout(() => {
-            rungs.forEach(rung => rung.classList.remove('selected'));
-            let row = masterScale.findIndex(row => row.includes(scale[i]));
-            let col = row !== -1 ? masterScale[row].indexOf(scale[i]) : -1;
-            document.getElementById(masterScale[row][col]).classList.add('selected');
-        }, i * 500); //500 ms
-    }
+    const scaleAscending = generateScale(root, scalePattern, octaves);
+    console.log(scaleAscending);
+    const scaleDescending = scaleAscending.slice(0,-1).toReversed();
+    const scale = scaleAscending.concat(scaleDescending);
+    let currentIndex = 0;
+    let play = setInterval(() => {
+        if (currentIndex == scale.length)
+        {
+            clearInterval(play);
+            document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+            return;
+        }
+        masterScaleIndexer(scale[currentIndex], currentIndex);
+        currentIndex++;
+    }, 500);
+}
+
+function masterScaleIndexer (note, i)
+{
+    let row = masterScale.findIndex(row => row.includes(note));
+    let col = row !== -1 ? masterScale[row].indexOf(note) : -1;
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    document.getElementById(masterScale[row][col]).classList.add('selected');
 }
 
 function generateScale (root, scalePattern, octaves) 
@@ -135,20 +147,21 @@ function generateScale (root, scalePattern, octaves)
     let scale = []
     let i = 0;
     let j = 0;
+    scale.push(masterScale[j][index]);
     while (octaves>0)
     {
+        index+=scalePattern[i];
+        if (index >= 12)
+        {
+            index-=12;
+            j++;
+        }
         scale.push(masterScale[j][index]);
-        index = index + scalePattern[i];
         i++;
         if (i == scalePattern.length)
         {
             i = 0;
             octaves--;
-        }
-        if (index >= 12)
-        {
-            index-=12;
-            j++;
         }
     }
     return scale
