@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <!--call CSS, tab title-->
+    <!--call .css, tab title-->
     <link href="style.css" rel="stylesheet">
     <title>Mainland Music Games</title>
 </head>
+
 <body>
+
     <header> <!--constant home button-->
         <img id="home-logo" src="assets/marimba.png" alt="Mainland Music Logo">
     </header>
-    <div class="homepage"> <!--home page HTML div-->
+
+<div class="home" id="home"> <!--home div-->
     <main>
-        <div class="homepage-titles">
+        <div class="home-titles">
             <h1>Mainland Music Games</h1>
             <h2>Percussion Family</h2>
         </div>
-        <div class="instrument-selection">
-            <button class = "instrument" id = "marimba" type="button">Marimba</button>
-            <button class = "instrument" id = "xylophone" type="button">Xylophone</button>
-            <button class = "instrument" id = "vibraphone" type="button">Vibraphone</button>
-            <button class = "instrument" id = "bells" type="button">Bells</button>
+        <div class="instruments" id="instruments">
+            <button id = "marimba" type="button">Marimba</button>
+            <button id = "xylophone" type="button">Xylophone</button>
+            <button id = "vibraphone" type="button">Vibraphone</button>
+            <button id = "bells" type="button">Bells</button>
         </div>
     </main>
     <footer>
@@ -29,55 +33,62 @@
             <img id = "github" src="assets/github-cat-black.png" alt="Check out my work!">
         </a>
     </footer>
-    </div> <!--end home screen div-->
-    <div class="free-play"> <!--free play screen div-->
-        <h1>Scales</h1>
-        <label for="Roots">Root:</label> <!--root selection-->
-            <select name="Roots" id="Roots">
-            <option value="A">A</option>
-            <option value="Bb">A#/B♭</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="Db">C#/D♭</option>
-            <option value="D">D</option>
-            <option value="Eb">D#/E♭</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="Gb">F#/G♭</option>
-            <option value="G">G</option>
-            <option value="Ab">G#/A♭</option>
-            </select>
-        <div class = "scales">
-            <div id= "scaleType"> <!--scaletype selection-->
-            <button class = "scaleType" id = "scaleMajor" type="button" data-pattern = "majorPattern" >Major</button>
-            <button class = "scaleType" id = "scaleMinor" type="button" data-pattern = "none" >Minor</button>
-            <button class = "scaleType" id = "scalePentatonic" type="button" data-pattern = "none" >Pentatonic</button>
-            <button class = "scaleType" id = "scaleBlues" type="button" data-pattern = "none" >Blues</button>
-            <button class = "scaleType" id = "scaleChromatic" type="button" data-pattern = "chromaticPattern" >Chromatic</button>
-            </div>
-            <div class="variations"> <!--scale variations-->
-                <div id = "header">
-                <h1>Variations</h1>
-                </div>
-            <div class = minorVariations>
-            <button class = minorVariations id = "naturalVariation" type="button" data-pattern = "minorNaturalPattern" >Natural</button>
-            <button class = minorVariations id = "harmonicVariation" type="button" data-pattern = "minorHarmonicPattern" >Harmonic</button>
-            <button class = minorVariations id = "melodicVariation" type="button" data-pattern = "minorMelodicPattern" >Melodic</button>
-            </div>
-            <div class = minorMajorVariations>
-            <button class = minorMajorVariations id = "majorVariation" type="button" data-pattern="major">Major</button>
-            <button class = minorMajorVariations id = "minorVariation" type ="button" data-pattern ="minor">Minor</button>
-            </div>
+</div> <!--home div-->
+    
+<div class="play" id="play"> <!--play div-->
+    <h1>Scales</h1>
+    <label for="roots">Root:</label>
+    <select name="root" id="root">
+        <option value="A">A</option>
+        <option value="Bb">A#/B♭</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="Db">C#/D♭</option>
+        <option value="D">D</option>
+        <option value="Eb">D#/E♭</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="Gb">F#/G♭</option>
+        <option value="G">G</option>
+        <option value="Ab">G#/A♭</option>
+    </select>
+    <div class="scales" id = "scales">
+        <div class="wrapper" id = "majorWrapper">
+            <h1>Major</h1>
+            <div id = "majorButtons">
+            <button id = "majorIonian" data-pattern="majorIonianPattern" type="button">ionian</button>
+            <button id = "majorLydian" data-pattern="majorLydianPattern" type="button">lydian</button>
+            <button id = "majorMixolydian" data-pattern="majorMixolydianPattern" type="button">mixolydian</button>
+            <button id = "majorHarmonic" data-pattern="majorHarmonicPattern" type="button">harmonic</button>
+            <button id = "majorPentatonic" data-pattern="majorPentatonicPattern" type="button">pentatonic</button>
+            <button id = "majorBlues" data-pattern="majorBluesPattern" type="button">blues</button>
             </div>
         </div>
-       <!-- <div class="metronome">
-            <label for="bpm">Tempo:</label>
-            <input type="number" id="bpm" name="bpm" min="1" max="999">
-            <span>bpm</span>
-        </div> -->
-        <div id="instrument-board"></div> <!--empty div for js-->
-        <button id = "startButton" type ="button">Start</button>
-    </div> <!--end free play screen div-->
-    <script src="script.js"></script> <!--call javascript-->
+        <div class="wrapper" id = "minorWrapper">
+            <h1>Minor</h1>
+            <div id = "minorButtons">
+            <button id = "minorAeolian" data-pattern="minorAeolianPattern" type="button">aeolian</button>
+            <button id = "minorDorian" data-pattern="minorDorianPattern" type="button">dorian</button>
+            <button id = "minorPhrygian" data-pattern="minorPhrygianPattern" type="button">phrygian</button>
+            <button id = "minorMelodic" data-pattern="minorMelodicPattern" type="button">melodic</button>
+            <button id = "minorHarmonic" data-pattern="minorHarmonicPattern" type="button">harmonic</button>
+            <button id = "minorPentatonic" data-pattern="minorPentatonicPattern" type="button">pentatonic</button>
+            <button id = "minorBlues" data-pattern="minorBluesPattern" type="button">blues</button>
+            </div>
+        </div>
+        <div class="wrapper" id = "otherWrapper">
+            <h1>Other</h1>
+            <div id = "otherButtons">
+            <button id = "chromatic" data-pattern="chromaticPattern" type="button">chromatic</button>
+            <button id = "locrian" data-pattern="locrianPattern" type="button">locrian</button>
+            </div>
+        </div>
+    </div>
+    <div class="rungs" id="naturalRungs"></div> 
+    <div class="rungs" id="accidentalRungs"></div>
+    <button id = "startButton" type ="button">Start</button>
+</div> <!--play div-->
+
+<script src="script.js"></script> <!--call .js-->
 </body>
 </html>

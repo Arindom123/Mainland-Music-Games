@@ -18,10 +18,13 @@
     background: brown;
     margin: 2px;
 }
-#instrument-board {
+.rungs {
     display: flex;
     position: relative;
     margin-top: 200px;
+}
+#accidentalRungs {
+    transform: translateX(30px) translateY(-550px);
 }
 .hidden {
     display: none

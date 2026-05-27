@@ -1,179 +1,155 @@
-// scale pattern for each scale type
+const homeDiv = document.getElementById("home");
+const playDiv = document.getElementById("play");
+const instrumentsDiv = document.getElementById("instruments");
+const instrumentButtons = instrumentsDiv.querySelectorAll('button');
+const scaleDiv = document.getElementById("scales");
+const scaleButtons = scaleDiv.querySelectorAll('button');
+const homeButton = document.getElementById("home-logo");
+const rootDropdown = document.getElementById("root");
+const startButton = document.getElementById("startButton");
+
+playDiv.classList.add('hidden');
+
 const scalePatternsMap = new Map();
-scalePatternsMap.set("majorPattern", [2,2,1,2,2,2,1]);
-scalePatternsMap.set("minorNaturalPattern", [2,1,2,2,1,2,2]);
-scalePatternsMap.set("minorHarmonicPattern", [2,1,2,2,1,3,1]);
-scalePatternsMap.set("minorMelodicPattern", [2,1,2,2,2,2,1]);
-scalePatternsMap.set("minorBluesPattern", [3,2,1,1,3,2]);
-scalePatternsMap.set("minorPentatonicPattern", [3,2,2,3,2]);
-scalePatternsMap.set("chromaticPattern", [1,1,1,1,1,1,1,1,1,1,1,1]);
-startButton = document.getElementById("startButton");
+scalePatternsMap.set("majorIonianPattern", [2, 2, 1, 2, 2, 2, 1]); //major
+scalePatternsMap.set("majorLydianPattern", [2, 2, 2, 1, 2, 2, 1]);
+scalePatternsMap.set("majorMixolydianPattern", [2, 2, 1, 2, 2, 1, 2]);
+scalePatternsMap.set("majorHarmonicPattern", [2, 2, 1, 2, 1, 3, 1]);
+scalePatternsMap.set("majorPentatonicPattern", [2, 2, 3, 2, 3]);
+scalePatternsMap.set("majorBluesPattern", [2, 1, 1, 3, 2, 3]);
+scalePatternsMap.set("minorAeolianPattern", [2, 1, 2, 2, 1, 2, 2]); //minor
+scalePatternsMap.set("minorDorianPattern", [2, 1, 2, 2, 2, 1, 2]);
+scalePatternsMap.set("minorPhrygianPattern", [1, 2, 2, 2, 1, 2, 2]);
+scalePatternsMap.set("minorHarmonicPattern", [2, 1, 2, 2, 1, 3, 1]);
+scalePatternsMap.set("minorMelodicPattern", [2, 1, 2, 2, 2, 2, 1]);
+scalePatternsMap.set("minorPentatonicPattern", [3, 2, 2, 3, 2]);
+scalePatternsMap.set("minorBluesPattern", [3, 2, 1, 1, 3, 2]);
+scalePatternsMap.set("chromaticPattern", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //other
+scalePatternsMap.set("locrianPattern", [1, 2, 2, 1, 2, 2, 2]);
+
+const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
+const masterScale = [
+    ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"], 
+    ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"],
+    ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3","B3"],
+//    ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"]
+];
+
 let currentScale = [];
-let scaleType = "";
-const scaleButtons = document.querySelectorAll(".scales button");
-scaleButtons.forEach(assignScalePattern);
-function minorToMajor(scalePattern)
+let scalePattern = [];
+let root = rootDropdown.value;
+let naturalRungDiv = document.getElementById("naturalRungs");
+let accidentalRungDiv = document.getElementById("accidentalRungs");
+
+rootDropdown.addEventListener("change", function()
 {
-    let placeholder = scalePattern[0];
-    scalePattern.splice(0,1);
-    scalePattern.push(placeholder);
-    return scalePattern;
-}
-function enableButtons (button)
+    root = rootDropdown.value;
+});
+
+homeButton.addEventListener("click", function()
+{
+    playDiv.classList.add('hidden');
+    homeDiv.classList.remove('hidden');
+});
+
+startButton.addEventListener("click", function()
+{
+    scaleDiv.classList.add('hidden');
+    playScale(root, scalePattern, 2);
+});
+
+scaleButtons.forEach(instantiateScaleButtons);
+instrumentButtons.forEach(instantiateInstrumentButtons);
+
+function enableButton (button)
 {
     button.disabled = false;
 }
-function assignScalePattern (scaleButton)
+
+function instantiateScaleButtons (scaleButton)
 {
     scaleButton.addEventListener("click", function()
 {
-    scaleButtons.forEach(enableButtons);
-    if (scaleButton.classList.contains("scaleType"))
-    {
-    minorVariationsDiv.classList.add('hidden');
-    minorMajorDiv.classList.add('hidden');
-    scaleType = scaleButton.id;
-    }
-    document.getElementById(scaleType).disabled = true;
+    scaleButtons.forEach(enableButton);
     scaleButton.disabled = true;
-    scalePattern = scaleButton.getAttribute('data-pattern');
-    if (scaleType == "scalePentatonic" || scaleType == "scaleBlues")
-    {
-        minorMajorDiv.classList.remove('hidden');
-        if (scalePattern == "major" || scalePattern == "minor")
-        {
-            if (scaleType == "scalePentatonic")
-            {
-            scalePattern = "minorPentatonicPattern";
-            }
-            else
-            {
-                scalePattern = "minorBluesPattern";
-            }
-            if (scalePattern == "major")
-            {
-                scalePattern = minorToMajor(scalePatternsMap.get(scalePattern));
-            }
-        }
-            
-    }
-    if (scaleType == "scaleMinor")
-    {
-        minorVariationsDiv.classList.remove('hidden');
-    }
-    if (scalePattern != "none")
-    {
-        generateScale(roots,scalePatternsMap.get(scalePattern));
-    }
+    scalePattern = scalePatternsMap.get(scaleButton.getAttribute('data-pattern'));
+    console.log(scalePattern);
 });
 }
-// html groupings for home page, free play page, minor variations buttons, & blues/pentatonic buttons
-const homePageDiv = document.querySelector(".homepage");
-const freePlayDiv = document.querySelector(".free-play");
-const scaleButtonsDiv = document.querySelector(".scales");
-const minorMajorDiv = document.querySelector(".minorMajorVariations");
-const minorVariationsDiv = document.querySelector(".minorVariations");
-//hide free-play screen & buttons on loadup
-freePlayDiv.classList.add('hidden');
-// get root dropdown ID
-const rootsID = document.getElementById("Roots");
-// scale variables
-let roots = rootsID.value;
-let scalePattern = "";
-// instrument buttons & scale type buttons
-const instruments = document.querySelectorAll(".instrument");
-instruments.forEach(instrumentButtons);
-// home button
-const homeButton = document.getElementById("home-logo");
-// chromatic scale for scale generation
-const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
-const chromaticScaleSecondOctave = ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"];
-// add logic for instrument buttons
-function instrumentButtons (button)
+
+function instantiateInstrumentButtons (instrumentButton)
 {
-    button.addEventListener("click", function ()
+    instrumentButton.addEventListener("click", function ()
     {
-    freePlayDiv.classList.add('show');
-    freePlayDiv.classList.remove('hidden');
-    homePageDiv.classList.add('hidden');
+    homeDiv.classList.add('hidden');
+    playDiv.classList.remove('hidden');
+    playDiv.classList.add('show')
     fillRungs();
     });
 }
-// illustrate mallet rungs
+
 function fillRungs () { 
-    let boardDiv = document.getElementById('instrument-board');
-    for (let i = 0; i<(chromaticScale.length + chromaticScaleSecondOctave.length); i++)
+    naturalRungDiv.replaceChildren();
+    accidentalRungDiv.replaceChildren();
+    for (let i = 0; i<masterScale.length; i++)
     {
-        const newRung = document.createElement('div');
-        if (i>7)
+        for (let j = 0; j<masterScale[i].length; j++)
         {
-            newRung.id = chromaticScaleSecondOctave[i];
-        }
-        newRung.id = chromaticScale[i];
-        newRung.classList.add('rung');
-        if (newRung.id.includes('b'))
-        {
-        let referenceRung = document.getElementById(chromaticScale[i-1]);
-        const refLeft = referenceRung.offsetLeft;
-        const refTop = referenceRung.offsetTop;
-        newRung.style.position = 'absolute';
-        newRung.style.left = `${refLeft+30}px`;
-        newRung.style.top = `${refTop-165}px`;
-        }
-        boardDiv.append(newRung);
-    }
-}
-function playScale ()
-{
-    const board = document.getElementById('instrument-board').querySelectorAll('.rung');
-    for (let i = 0; i<currentScale.length; i++)
-    {
-        setTimeout(() => {
-            board.forEach(rung => rung.classList.remove('selected'));
-            if (currentScale[i].includes('2'))
+            let newRung = document.createElement('div');
+            newRung.classList.add('rung')
+            newRung.id = masterScale[i][j];
+            if (newRung.id.includes('b'))
             {
-            document.getElementById(currentScaleSecondOctave[i]).classList.add('selected');
+                accidentalRungDiv.append(newRung);
+                if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
+                {
+                    newRung.style.marginRight = "70px";
+                }
             }
             else
             {
-            document.getElementById(currentScale[i]).classList.add('selected');                
+                naturalRungDiv.append(newRung);
             }
+        }
+    }
+}
+
+function playScale (root, scalePattern, octaves)
+{
+    let scale = generateScale(root, scalePattern, octaves);
+    const rungs = document.querySelectorAll('.rungs');
+    for (let i = 0; i<scale.length; i++)
+    {
+        setTimeout(() => {
+            rungs.forEach(rung => rung.classList.remove('selected'));
+            let row = masterScale.findIndex(row => row.includes(scale[i]));
+            let col = row !== -1 ? masterScale[row].indexOf(scale[i]) : -1;
+            document.getElementById(masterScale[row][col]).classList.add('selected');
         }, i * 500); //500 ms
     }
 }
-// scale generation by root and pattern
-function generateScale (roots, scalePattern) 
+
+function generateScale (root, scalePattern, octaves) 
 {
-    let currentIndex = chromaticScale.indexOf(roots);
-    currentScale.length = 0;
-    currentScale.push(chromaticScale[currentIndex]);
-    for (let i = 0; i<scalePattern.length; i++)
+    let index = chromaticScale.indexOf(root);
+    let scale = []
+    let i = 0;
+    let j = 0;
+    while (octaves>0)
     {
-        currentIndex+=scalePattern[i];
-        if (currentIndex > 11)
+        scale.push(masterScale[j][index]);
+        index = index + scalePattern[i];
+        i++;
+        if (i == scalePattern.length)
         {
-            currentIndex-=12;
+            i = 0;
+            octaves--;
         }
-        if (currentScale.length > 7)
+        if (index >= 12)
         {
-        currentScale.push(chromaticScaleSecondOctave[currentIndex]);
+            index-=12;
+            j++;
         }
-        currentScale.push(chromaticScale[currentIndex]);
     }
+    return scale
 }
-// record updates to root dropdown
-rootsID.addEventListener("change", function()
-{
-    roots = rootsID.value;
-});
-// home button event listener
-homeButton.addEventListener("click", function()
-{
-    freePlayDiv.classList.add('hidden');
-    homePageDiv.classList.remove('hidden');
-});
-startButton.addEventListener("click", function()
-{
-    console.log(currentScale);
-    playScale();
-});
