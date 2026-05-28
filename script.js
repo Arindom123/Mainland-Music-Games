@@ -10,12 +10,14 @@ const replayButton = document.getElementById("replayButton");
 const backButton = document.getElementById("backButton");
 
 const rootDropdown = document.getElementById("root");
-const octaveDropdown = document.getElementById("octaves");
+const octaveDropdown = document.getElementById("octave");
 
 const previewCheckbox = document.getElementById("preview");
+const metronomeStepper = document.getElementById("metronome");
 
 const scaleNameText = document.getElementById("scaleName");
 const selectScaleText = document.getElementById("selectScale");
+const currentNote = document.getElementById("note");
 
 let preview = previewCheckbox.checked;
 let scalePattern = [];
@@ -26,6 +28,9 @@ let play = null;
 let currentIndex = 0;
 let scaleName = "";
 let octave = octaveDropdown.value;
+let tempo = metronomeStepper.value;
+let octavesInstrument = null;
+let startingNoteInstrument = null;
 
 function home ()
 {
@@ -34,7 +39,6 @@ function home ()
     playingScreen.classList.add('hidden');
     naturalRungDiv.classList.add('hidden');
     accidentalRungDiv.classList.add('hidden');
-
 }
 
 function scaleSelection ()
@@ -47,6 +51,7 @@ function scaleSelection ()
     naturalRungDiv.classList.remove('hidden');
     accidentalRungDiv.classList.remove('hidden');
     startButton.disabled = true;
+    previewCheckbox.checked = false;
 }
 
 function playing ()
@@ -75,15 +80,15 @@ scalePatternsMap.set("minorHarmonic", [2, 1, 2, 2, 1, 3, 1]);
 scalePatternsMap.set("minorMelodic", [2, 1, 2, 2, 2, 2, 1]);
 scalePatternsMap.set("minorPentatonic", [3, 2, 2, 3, 2]);
 scalePatternsMap.set("minorBlues", [3, 2, 1, 1, 3, 2]);
+scalePatternsMap.set("minorLocrian", [1, 2, 2, 1, 2, 2, 2]);
 scalePatternsMap.set("chromatic", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //other
-scalePatternsMap.set("locrian", [1, 2, 2, 1, 2, 2, 2]);
 
-const chromaticScale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"];
 const masterScale = [
     ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"], 
     ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"],
     ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3","B3"],
-    ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"]
+    ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"],
+    ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5","B5"]
 ];
 
 rootDropdown.addEventListener("change", function()
@@ -149,6 +154,20 @@ backButton.addEventListener("click", function()
     selectScaleText.classList.remove('hidden');
 });
 
+metronomeStepper.addEventListener("change", function()
+{
+    let tempoEntered = metronomeStepper.value;
+    if (tempoEntered >= 10 && tempoEntered <= 500)
+    {
+    tempo = metronomeStepper.value;
+    }
+    else
+    {
+    tempo = Math.abs(tempoEntered - 10) < Math.abs(tempoEntered - 500) ? 1 : 500;
+    metronomeStepper.value = tempo
+    }
+});
+
 scaleButtons.forEach(instantiateScaleButtons);
 instrumentButtons.forEach(instantiateInstrumentButtons);
 
@@ -185,40 +204,54 @@ function instantiateInstrumentButtons (instrumentButton)
 {
     instrumentButton.addEventListener("click", function ()
     {
+    let startingNote = instrumentButton.getAttribute('data-startingNote');
+    let octavesInstrument = +instrumentButton.getAttribute('data-octaves');
     scaleSelection();
-    fillRungs();
+    fillRungs(startingNote, octavesInstrument);
     });
 }
 
-function fillRungs () { 
+function fillRungs (startingNote, octavesInstrument) { 
     naturalRungDiv.replaceChildren();
     accidentalRungDiv.replaceChildren();
-    for (let i = 0; i<masterScale.length; i++)
+    let startingNoteIndex = masterScale[0].indexOf(startingNote);
+    let fullOctaves = Math.floor(octavesInstrument);
+    let partialOctave = octavesInstrument%1
+    for (let i = 0; i<fullOctaves; i++)
     {
-        for (let j = 0; j<masterScale[i].length; j++)
+        addRung(i, 1, startingNoteIndex);
+    }
+    if (partialOctave > 0)
+    {
+        addRung(fullOctaves+1, partialOctave, startingNoteIndex);
+    }
+}
+
+function addRung (i, partialOctave, startingNoteIndex)
+{
+    for (let j = startingNoteIndex; j<(12*partialOctave)+startingNoteIndex; j++)
+    {
+        let newRung = document.createElement('div');
+        newRung.classList.add('rung')
+        newRung.id = masterScale[i+Math.floor(j/12)][j%12];
+        if (newRung.id.includes('b'))
         {
-            let newRung = document.createElement('div');
-            newRung.classList.add('rung')
-            newRung.id = masterScale[i][j];
-            if (newRung.id.includes('b'))
+            accidentalRungDiv.append(newRung);
+            if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
             {
-                accidentalRungDiv.append(newRung);
-                if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
-                {
-                    newRung.style.marginRight = "63px";
-                }
+                newRung.style.marginRight = "63px";
             }
-            else
-            {
-                naturalRungDiv.append(newRung);
-            }
+        }
+        else
+        {
+            naturalRungDiv.append(newRung);
         }
     }
 }
 
 function playScale (root, scalePattern, octave, preview)
 {
-    let timeout = (preview) ? 0 : 500
+    let timeout = (preview) ? 0 : 60000/tempo;
     const scaleAscending = generateScale(root, scalePattern, octave);
     scaleNameText.textContent = "Scale: " + root + " " + scaleName;
     const scaleDescending = scaleAscending.slice(0,-1).toReversed();
@@ -244,6 +277,7 @@ function interval (scale, preview)
 
 function masterScaleIndexer (note, i, preview)
 {
+    currentNote.textContent = "Note: " + note;
     let row = masterScale.findIndex(row => row.includes(note));
     let col = masterScale[row].indexOf(note);
     if (!preview)
@@ -255,7 +289,7 @@ function masterScaleIndexer (note, i, preview)
 
 function generateScale (root, scalePattern, octave) 
 {
-    let index = chromaticScale.indexOf(root);
+    let index = masterScale[0].indexOf(root);
     let scale = []
     let i = 0;
     let j = 0;
