@@ -85,24 +85,24 @@
         <div class="wrapper" id = "otherWrapper">
             <h1>Other</h1>
             <div id = "otherButtons">
-            <button id = "chromatic" data-pattern="chromaticPattern" type="button">chromatic</button>
-            <button id = "locrian" data-pattern="locrianPattern" type="button">locrian</button>
+            <button id = "chromatic" data-pattern="chromatic" type="button">chromatic</button>
+            <button id = "locrian" data-pattern="locrian" type="button">locrian</button>
             </div>
         </div>
     </div>
+    <input type="checkbox" id="preview" name="preview">
+    <label for="preview">Preview Scale</label>
     <h1 id = "selectScale">Please select a scale</h1>
     <button id = "startButton" type ="button">Start</button>
 </div>
 <div class="playing" id="playing">
-    <div class="rungs" id="naturalRungs"></div> 
-    <div class="rungs" id="accidentalRungs"></div>
+
     <button id = "backButton" type ="button">Back</button>
     <h1 id = "scaleName">Current Scale: </h1>
     <button id = "replayButton" type ="button">Replay</button>
-    <input type="checkbox" id="stickyNotes" name="stickyNotes">
-    <label for="stickyNotes">Sticky Notes</label>
 </div>
-
+<div class="rungs" id="naturalRungs"></div> 
+<div class="rungs" id="accidentalRungs"></div>
 <script src="script.js"></script> <!--call .js-->
 </body>
 </html>

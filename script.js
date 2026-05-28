@@ -12,24 +12,41 @@ const backButton = document.getElementById("backButton");
 const rootDropdown = document.getElementById("root");
 const octaveDropdown = document.getElementById("octaves");
 
-const stickyNotesCheckbox = document.getElementById("stickyNotes");
+const previewCheckbox = document.getElementById("preview");
 
 const scaleNameText = document.getElementById("scaleName");
 const selectScaleText = document.getElementById("selectScale");
+
+let preview = previewCheckbox.checked;
+let scalePattern = [];
+let root = rootDropdown.value;
+let naturalRungDiv = document.getElementById("naturalRungs");
+let accidentalRungDiv = document.getElementById("accidentalRungs");
+let play = null;
+let currentIndex = 0;
+let scaleName = "";
+let octave = octaveDropdown.value;
 
 function home ()
 {
     homeScreen.classList.remove('hidden');
     scaleSelectionScreen.classList.add('hidden');
     playingScreen.classList.add('hidden');
+    naturalRungDiv.classList.add('hidden');
+    accidentalRungDiv.classList.add('hidden');
+
 }
 
 function scaleSelection ()
 {
+    scaleButtons.forEach(enableButton);
     homeScreen.classList.add('hidden');
     scaleSelectionScreen.classList.remove('hidden');
     playingScreen.classList.add('hidden');
     startButton.textContent = "Play";
+    naturalRungDiv.classList.remove('hidden');
+    accidentalRungDiv.classList.remove('hidden');
+    startButton.disabled = true;
 }
 
 function playing ()
@@ -38,6 +55,7 @@ function playing ()
     playingScreen.classList.remove('hidden');
     startButton.classList.remove('hidden');
     startButton.textContent = "Replay";
+    preview = false;
 }
 
 home();
@@ -68,29 +86,37 @@ const masterScale = [
     ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"]
 ];
 
-let stickyNotes = stickyNotesCheckbox.checked;
-let scalePattern = [];
-let root = rootDropdown.value;
-let naturalRungDiv = document.getElementById("naturalRungs");
-let accidentalRungDiv = document.getElementById("accidentalRungs");
-let play = null;
-let currentIndex = 0;
-let scaleName = "";
-let octave = octaveDropdown.value;
-
 rootDropdown.addEventListener("change", function()
 {
     root = rootDropdown.value;
+    if (preview && scalePattern.length!=0)
+    {
+    clearInterval(play);
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    playScale(root, scalePattern, octave, preview);
+    }
 });
 
 octaveDropdown.addEventListener("change", function()
 {
     octave = octaveDropdown.value;
+    if (preview && scalePattern.length!=0)
+    {
+    clearInterval(play);
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    playScale(root, scalePattern, octave, preview);
+    }
 });
 
-stickyNotesCheckbox.addEventListener("change", function() 
+previewCheckbox.addEventListener("change", function() 
 {
-    stickyNotes = stickyNotesCheckbox.checked;
+    clearInterval(play);
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    preview = previewCheckbox.checked;
+    if (preview && scalePattern.length!=0)
+    {
+    playScale(root, scalePattern, octave, preview);
+    }
 });
 
 homeButton.addEventListener("click", function()
@@ -105,14 +131,14 @@ startButton.addEventListener("click", function()
     clearInterval(play);
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
     playing();
-    playScale(root, scalePattern, octave, stickyNotes);
+    playScale(root, scalePattern, octave, preview);
 });
 
 replayButton.addEventListener("click", function()
 {
     clearInterval(play);
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
-    playScale(root, scalePattern, octave, stickyNotes);
+    playScale(root, scalePattern, octave, preview);
 });
 
 backButton.addEventListener("click", function()
@@ -135,6 +161,8 @@ function instantiateScaleButtons (scaleButton)
 {
     scaleButton.addEventListener("click", function()
 {
+    clearInterval(play);
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
     startButton.disabled = false;
     selectScaleText.classList.add('hidden');
     scaleButtons.forEach(enableButton);
@@ -145,6 +173,10 @@ function instantiateScaleButtons (scaleButton)
     if (scaleName.includes("Major") || scaleName.includes("Minor"))
     {
     scaleName = scaleName.slice(0, 5) + " " + scaleName.slice(5);
+    }
+    if (preview)
+    {
+    playScale(root, scalePattern, octave, preview);
     }
 });
 }
@@ -184,36 +216,37 @@ function fillRungs () {
     }
 }
 
-function playScale (root, scalePattern, octave, stickyNotes)
+function playScale (root, scalePattern, octave, preview)
 {
+    let timeout = (preview) ? 0 : 500
     const scaleAscending = generateScale(root, scalePattern, octave);
     scaleNameText.textContent = "Scale: " + root + " " + scaleName;
     const scaleDescending = scaleAscending.slice(0,-1).toReversed();
     const scale = scaleAscending.concat(scaleDescending);
     currentIndex = 0;
-    play = setInterval(function() {interval(scale, stickyNotes)}, 500);
+    play = setInterval(function() {interval(scale, preview)}, timeout);
 }
 
-function interval (scale, stickyNotes)
+function interval (scale, preview)
 {
     if (currentIndex == scale.length)
     {
-        if (!stickyNotes)
+        if (!preview)
         {
         clearInterval(play);
         document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
         }
         return;
     }
-    masterScaleIndexer(scale[currentIndex], currentIndex, stickyNotes);
+    masterScaleIndexer(scale[currentIndex], currentIndex, preview);
     currentIndex++;
 }
 
-function masterScaleIndexer (note, i, stickyNotes)
+function masterScaleIndexer (note, i, preview)
 {
     let row = masterScale.findIndex(row => row.includes(note));
     let col = masterScale[row].indexOf(note);
-    if (!stickyNotes)
+    if (!preview)
     {
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
     }
