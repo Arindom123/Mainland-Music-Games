@@ -1,18 +1,47 @@
-const homeDiv = document.getElementById("home");
-const playDiv = document.getElementById("play");
-const instrumentsDiv = document.getElementById("instruments");
-const instrumentButtons = instrumentsDiv.querySelectorAll('button');
-const scaleSelectionDiv = document.getElementById("scaleSelection");
-const playingDiv = document.getElementById("playing");
-const scaleButtons = scaleSelectionDiv.querySelectorAll('button');
-const homeButton = document.getElementById("home-logo");
-const rootDropdown = document.getElementById("root");
-const startButton = document.getElementById("startButton");
-const backButton = document.getElementById("backButton");
-const scaleNameText = document.getElementById("scaleName");
+const homeScreen = document.getElementById("home");
+const scaleSelectionScreen = document.getElementById("scaleSelection");
+const playingScreen = document.getElementById("playing");
 
-playDiv.classList.add('hidden');
-playingDiv.classList.add('hidden');
+const homeButton = document.getElementById("home-logo");
+const instrumentButtons = document.querySelectorAll('.instruments');
+const scaleButtons = document.querySelectorAll("[data-pattern]");
+const startButton = document.getElementById("startButton");
+const replayButton = document.getElementById("replayButton");
+const backButton = document.getElementById("backButton");
+
+const rootDropdown = document.getElementById("root");
+const octaveDropdown = document.getElementById("octaves");
+
+const stickyNotesCheckbox = document.getElementById("stickyNotes");
+
+const scaleNameText = document.getElementById("scaleName");
+const selectScaleText = document.getElementById("selectScale");
+
+function home ()
+{
+    homeScreen.classList.remove('hidden');
+    scaleSelectionScreen.classList.add('hidden');
+    playingScreen.classList.add('hidden');
+}
+
+function scaleSelection ()
+{
+    homeScreen.classList.add('hidden');
+    scaleSelectionScreen.classList.remove('hidden');
+    playingScreen.classList.add('hidden');
+    startButton.textContent = "Play";
+}
+
+function playing ()
+{
+    scaleSelectionScreen.classList.add('hidden');
+    playingScreen.classList.remove('hidden');
+    startButton.classList.remove('hidden');
+    startButton.textContent = "Replay";
+}
+
+home();
+startButton.disabled = true;
 
 const scalePatternsMap = new Map();
 scalePatternsMap.set("majorIonian", [2, 2, 1, 2, 2, 2, 1]); //major
@@ -36,10 +65,10 @@ const masterScale = [
     ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"], 
     ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"],
     ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3","B3"],
-//  ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"]
+    ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"]
 ];
 
-let currentScale = [];
+let stickyNotes = stickyNotesCheckbox.checked;
 let scalePattern = [];
 let root = rootDropdown.value;
 let naturalRungDiv = document.getElementById("naturalRungs");
@@ -47,35 +76,51 @@ let accidentalRungDiv = document.getElementById("accidentalRungs");
 let play = null;
 let currentIndex = 0;
 let scaleName = "";
+let octave = octaveDropdown.value;
 
 rootDropdown.addEventListener("change", function()
 {
     root = rootDropdown.value;
 });
 
+octaveDropdown.addEventListener("change", function()
+{
+    octave = octaveDropdown.value;
+});
+
+stickyNotesCheckbox.addEventListener("change", function() 
+{
+    stickyNotes = stickyNotesCheckbox.checked;
+});
+
 homeButton.addEventListener("click", function()
 {
-    playDiv.classList.add('hidden');
-    homeDiv.classList.remove('hidden');
+    home();
+    scalePattern = [];
 });
 
 startButton.addEventListener("click", function()
 {
+    selectScaleText.classList.add('hidden');
     clearInterval(play);
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
-    scaleSelectionDiv.classList.add('hidden');
-    playingDiv.classList.remove('hidden');
-    playScale(root, scalePattern, 2);
-    startButton.textContent = "Replay";
+    playing();
+    playScale(root, scalePattern, octave, stickyNotes);
+});
+
+replayButton.addEventListener("click", function()
+{
+    clearInterval(play);
+    document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    playScale(root, scalePattern, octave, stickyNotes);
 });
 
 backButton.addEventListener("click", function()
 {
     clearInterval(play);
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
-    scaleSelectionDiv.classList.remove('hidden');
-    startButton.textContent = "Play";
-    playingDiv.classList.add('hidden');
+    scaleSelection();
+    selectScaleText.classList.remove('hidden');
 });
 
 scaleButtons.forEach(instantiateScaleButtons);
@@ -90,6 +135,8 @@ function instantiateScaleButtons (scaleButton)
 {
     scaleButton.addEventListener("click", function()
 {
+    startButton.disabled = false;
+    selectScaleText.classList.add('hidden');
     scaleButtons.forEach(enableButton);
     scaleButton.disabled = true;
     let scaleNameInitial = scaleButton.getAttribute('data-pattern')
@@ -106,9 +153,7 @@ function instantiateInstrumentButtons (instrumentButton)
 {
     instrumentButton.addEventListener("click", function ()
     {
-    homeDiv.classList.add('hidden');
-    playDiv.classList.remove('hidden');
-    playDiv.classList.add('show')
+    scaleSelection();
     fillRungs();
     });
 }
@@ -139,45 +184,50 @@ function fillRungs () {
     }
 }
 
-function playScale (root, scalePattern, octaves)
+function playScale (root, scalePattern, octave, stickyNotes)
 {
-    const scaleAscending = generateScale(root, scalePattern, octaves);
+    const scaleAscending = generateScale(root, scalePattern, octave);
     scaleNameText.textContent = "Scale: " + root + " " + scaleName;
-    console.log(scaleAscending);
     const scaleDescending = scaleAscending.slice(0,-1).toReversed();
     const scale = scaleAscending.concat(scaleDescending);
     currentIndex = 0;
-    play = setInterval(function() {interval(scale)}, 500);
+    play = setInterval(function() {interval(scale, stickyNotes)}, 500);
 }
 
-function interval (scale)
+function interval (scale, stickyNotes)
 {
     if (currentIndex == scale.length)
     {
+        if (!stickyNotes)
+        {
         clearInterval(play);
         document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+        }
         return;
     }
-    masterScaleIndexer(scale[currentIndex], currentIndex);
+    masterScaleIndexer(scale[currentIndex], currentIndex, stickyNotes);
     currentIndex++;
 }
 
-function masterScaleIndexer (note, i)
+function masterScaleIndexer (note, i, stickyNotes)
 {
     let row = masterScale.findIndex(row => row.includes(note));
-    let col = row !== -1 ? masterScale[row].indexOf(note) : -1;
+    let col = masterScale[row].indexOf(note);
+    if (!stickyNotes)
+    {
     document.querySelectorAll('.selected').forEach(element => element.classList.remove('selected'));
+    }
     document.getElementById(masterScale[row][col]).classList.add('selected');
 }
 
-function generateScale (root, scalePattern, octaves) 
+function generateScale (root, scalePattern, octave) 
 {
     let index = chromaticScale.indexOf(root);
     let scale = []
     let i = 0;
     let j = 0;
     scale.push(masterScale[j][index]);
-    while (octaves>0)
+    while (octave>0)
     {
         index+=scalePattern[i];
         if (index >= 12)
@@ -190,7 +240,7 @@ function generateScale (root, scalePattern, octaves)
         if (i == scalePattern.length)
         {
             i = 0;
-            octaves--;
+            octave--;
         }
     }
     return scale
