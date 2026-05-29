@@ -3,7 +3,7 @@ const scaleSelectionScreen = document.getElementById("scaleSelection");
 const playingScreen = document.getElementById("playing");
 
 const homeButton = document.getElementById("home-logo");
-const instrumentButtons = document.querySelectorAll('.instruments');
+const instrumentButtons = document.querySelectorAll('button.instruments');
 const scaleButtons = document.querySelectorAll("[data-pattern]");
 const startButton = document.getElementById("startButton");
 const replayButton = document.getElementById("replayButton");
@@ -22,8 +22,7 @@ const currentNote = document.getElementById("note");
 let preview = previewCheckbox.checked;
 let scalePattern = [];
 let root = rootDropdown.value;
-let naturalRungDiv = document.getElementById("naturalRungs");
-let accidentalRungDiv = document.getElementById("accidentalRungs");
+let allRungsDiv = document.getElementById("allRungs");
 let play = null;
 let currentIndex = 0;
 let scaleName = "";
@@ -31,14 +30,16 @@ let octave = octaveDropdown.value;
 let tempo = metronomeStepper.value;
 let octavesInstrument = null;
 let startingNoteInstrument = null;
+let extraNotesInstrument = null;
+let naturalNotesCounter = 0;
+let accidentalNotesCounter = 0;
 
 function home ()
 {
     homeScreen.classList.remove('hidden');
     scaleSelectionScreen.classList.add('hidden');
     playingScreen.classList.add('hidden');
-    naturalRungDiv.classList.add('hidden');
-    accidentalRungDiv.classList.add('hidden');
+    allRungsDiv.classList.add('hidden');
 }
 
 function scaleSelection ()
@@ -48,8 +49,7 @@ function scaleSelection ()
     scaleSelectionScreen.classList.remove('hidden');
     playingScreen.classList.add('hidden');
     startButton.textContent = "Play";
-    naturalRungDiv.classList.remove('hidden');
-    accidentalRungDiv.classList.remove('hidden');
+    allRungsDiv.classList.remove('hidden');
     startButton.disabled = true;
     previewCheckbox.checked = false;
 }
@@ -88,7 +88,8 @@ const masterScale = [
     ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"],
     ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3","B3"],
     ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"],
-    ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5","B5"]
+    ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5","B5"],
+    ["C6", "Db6", "D6", "Eb6", "E6", "F6", "Gb6", "G6", "Ab6", "A6", "Bb6","B6"]
 ];
 
 rootDropdown.addEventListener("change", function()
@@ -204,47 +205,63 @@ function instantiateInstrumentButtons (instrumentButton)
 {
     instrumentButton.addEventListener("click", function ()
     {
-    let startingNote = instrumentButton.getAttribute('data-startingNote');
-    let octavesInstrument = +instrumentButton.getAttribute('data-octaves');
+    startingNote = instrumentButton.getAttribute('data-startingNote');
+    octavesInstrument = +instrumentButton.getAttribute('data-octaves');
+    extraNotesInstrument = +instrumentButton.getAttribute('data-extraNotes');
+    octaveDropdown.replaceChildren();
+    for (let i = 0; i<octavesInstrument-1; i++)
+    {
+        let octaveChoice = document.createElement('option');
+        octaveChoice.textContent = i+1;
+        octaveChoice.value = i+1;
+        octaveDropdown.append(octaveChoice);
+    }
+    octave = octaveDropdown.value;
     scaleSelection();
-    fillRungs(startingNote, octavesInstrument);
-    });
+    fillRungs(startingNote, octavesInstrument, extraNotesInstrument);
+});
 }
 
 function fillRungs (startingNote, octavesInstrument) { 
-    naturalRungDiv.replaceChildren();
-    accidentalRungDiv.replaceChildren();
+    allRungsDiv.replaceChildren();
     let startingNoteIndex = masterScale[0].indexOf(startingNote);
-    let fullOctaves = Math.floor(octavesInstrument);
-    let partialOctave = octavesInstrument%1
-    for (let i = 0; i<fullOctaves; i++)
+    for (let i = 0; i<octavesInstrument; i++)
     {
-        addRung(i, 1, startingNoteIndex);
+        addRung(i, 12, startingNoteIndex);
     }
-    if (partialOctave > 0)
+    if (extraNotesInstrument > 0)
     {
-        addRung(fullOctaves+1, partialOctave, startingNoteIndex);
+        addRung(octavesInstrument, extraNotesInstrument, startingNoteIndex);
     }
+    naturalNotesCounter = 0;
+    accidentalNotesCounter = 0;
 }
 
-function addRung (i, partialOctave, startingNoteIndex)
+function addRung (i, notes, startingNoteIndex)
 {
-    for (let j = startingNoteIndex; j<(12*partialOctave)+startingNoteIndex; j++)
+    for (let j = startingNoteIndex; j<(notes)+startingNoteIndex; j++)
     {
         let newRung = document.createElement('div');
         newRung.classList.add('rung')
         newRung.id = masterScale[i+Math.floor(j/12)][j%12];
+        allRungsDiv.append(newRung);
         if (newRung.id.includes('b'))
         {
-            accidentalRungDiv.append(newRung);
+            newRung.style.bottom = "1px";
+            newRung.style.zIndex = "1";
+            let shift = 76*accidentalNotesCounter + 37;
+            newRung.style.left = `${shift}px`;
+            accidentalNotesCounter++;
             if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
             {
-                newRung.style.marginRight = "63px";
+                accidentalNotesCounter++;
             }
         }
         else
         {
-            naturalRungDiv.append(newRung);
+            let shift = 76*naturalNotesCounter;
+            newRung.style.left += `${shift}px`;
+            naturalNotesCounter++;
         }
     }
 }
@@ -292,7 +309,7 @@ function generateScale (root, scalePattern, octave)
     let index = masterScale[0].indexOf(root);
     let scale = []
     let i = 0;
-    let j = 0;
+    let j = (document.getElementById(root) == null) ? 1 : 0;
     scale.push(masterScale[j][index]);
     while (octave>0)
     {

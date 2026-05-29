@@ -20,10 +20,10 @@
             <h2>Percussion Family</h2>
         </div>
         <div class="instruments" id="instruments">
-            <button class="instruments" data-octaves="5" data-startingNote="C" id = "marimba" type="button">Marimba</button>
-            <button class="instruments" data-octaves="3.5" data-startingNote="F" id = "xylophone" type="button">Xylophone</button>
-            <button class="instruments" data-octaves="3" data-startingNote="F" id = "vibraphone" type="button">Vibraphone</button>
-            <button class="instruments" data-octaves="2.5" data-startingNote="G" id = "bells" type="button">Bells</button>
+            <button class="instruments" data-extraNotes="4" data-octaves="4" data-startingNote="A" id = "marimba" type="button">Marimba</button>
+            <button class="instruments" data-extraNotes="8" data-octaves="3" data-startingNote="F" id = "xylophone" type="button">Xylophone</button>
+            <button class="instruments" data-extraNotes="1" data-octaves="3" data-startingNote="F" id = "vibraphone" type="button">Vibraphone</button>
+            <button class="instruments" data-extraNotes="8"data-octaves="2" data-startingNote="F" id = "bells" type="button">Bells</button>
         </div>
     </main>
     <footer>
@@ -57,6 +57,8 @@
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
     </select>
     <div class="scales" id = "scales">
         <div class="wrapper" id = "majorWrapper">
@@ -80,7 +82,7 @@
             <button id = "minorHarmonic" data-pattern="minorHarmonic" type="button">harmonic</button>
             <button id = "minorPentatonic" data-pattern="minorPentatonic" type="button">pentatonic</button>
             <button id = "minorBlues" data-pattern="minorBlues" type="button">blues</button>
-            <button id = "minorLocrian" data-pattern="locrian" type="button">locrian</button>
+            <button id = "minorLocrian" data-pattern="minorLocrian" type="button">locrian</button>
             </div>
         </div>
         <div class="wrapper" id = "otherWrapper">
@@ -102,8 +104,7 @@
     <h2 id = "note">Note: </h2>
     <label><input type="number" id="metronome" name="metronome" min="10" max="500" value="80"> bpm (10-500)</label>
 </div>
-<div class="rungs" id="naturalRungs"></div> 
-<div class="rungs" id="accidentalRungs"></div>
+<div id = "allRungs"></div>
 <script src="script.js"></script> <!--call .js-->
 </body>
 </html>
