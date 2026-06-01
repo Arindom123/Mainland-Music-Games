@@ -56,15 +56,27 @@
 .selected {
     background: yellow !important;
 }
-.marimba {
+.marimbaNatural {
     background: linear-gradient(rgb(227, 112, 112), maroon);
 }
-.xylophone {
-    background: linear-gradient(red, blue);
+.marimbaAccidental {
+    background: linear-gradient(maroon, rgb(227, 112, 112));
 }
-.bells {
-    background: linear-gradient(red, blue);
+.xylophoneNatural {
+    background: linear-gradient(#DD9D7E, #723720);
 }
-.vibraphone {
-    background: linear-gradient(red, blue);
+.xylophoneAccidental {
+    background: linear-gradient(#723720, #DD9D7E);
+}
+.bellsNatural {
+    background: linear-gradient(rgb(212, 212, 212), grey);
+}
+.bellsAccidental {
+    background: linear-gradient(grey, rgb(212,212,212));
+}
+.vibraphoneNatural {
+    background: linear-gradient(rgb(212, 212, 212), grey);
+}
+.vibraphoneAccidental {
+    background: linear-gradient(grey, rgb(212,212,212));
 }

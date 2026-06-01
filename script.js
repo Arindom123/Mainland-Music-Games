@@ -264,18 +264,19 @@ function addRung (i, notes, startingNoteIndex)
         newRung.style.height = `${perNoteShift*3}vw`;
         allRungsDiv.style.height = `${perNoteShift*3}vw`;
         allRungsDiv.style.marginTop = `${perNoteShift*3}vw`;
-        newRung.classList.add(instrument);
         if (newRung.id.includes('b'))
         {
             newRung.style.bottom = `${perNoteShift*2.45}vw`;
             newRung.style.zIndex = "1";
             newRung.style.boxShadow = "2px 7px 2px";
             newRung.style.left = `${shift-(.5*perNoteShift) + 1.5}%`;
+            newRung.classList.add(instrument + "Accidental");
         }
         else
         {
             newRung.style.left = `${shift + 1.5}%`;
             noteCounter++;
+            newRung.classList.add(instrument + "Natural");
         }
     }
 }
