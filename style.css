@@ -35,11 +35,12 @@
     position: absolute;
     border: 1px solid black;
     background: brown;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px;
 }
 #allRungs {
     position: relative;
-    height: 50px;
-    margin-top: 175px;
+    align-items: center;
 }
 .hidden {
     display: none !important;
@@ -53,17 +54,17 @@
     visibility: hidden;
 }
 .selected {
-    background: yellow;
+    background: yellow !important;
 }
-.wrapper:hover button {
-    scale: 1.5;
-    transform: rotate(calc(360deg / var(--total-buttons) * var(--i))) translateY(-60px) rotate(calc(360deg / var(--total-buttons) * var(--i)))
+.marimba {
+    background: linear-gradient(rgb(227, 112, 112), maroon);
 }
-.wrapper button{
-    transition: all 0.3s ease-in-out;
-    position: absolute;
-    transform: rotate(calc(360deg / var(--total-buttons) * var(--i))) translateY(10px);
+.xylophone {
+    background: linear-gradient(red, blue);
 }
-.wrapper {
-    position: relative;
+.bells {
+    background: linear-gradient(red, blue);
+}
+.vibraphone {
+    background: linear-gradient(red, blue);
 }

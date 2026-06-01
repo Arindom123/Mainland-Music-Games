@@ -33,7 +33,7 @@ let startingNoteInstrument = null;
 let extraNotesInstrument = null;
 let naturalNotesCounter = 0;
 let noteCounter = 0;
-let color = null;
+let instrument = null;
 
 function home ()
 {
@@ -209,7 +209,7 @@ function instantiateInstrumentButtons (instrumentButton)
     startingNote = instrumentButton.getAttribute('data-startingNote');
     octavesInstrument = +instrumentButton.getAttribute('data-octaves');
     extraNotesInstrument = +instrumentButton.getAttribute('data-extraNotes');
-    color = instrumentButton.getAttribute('data-color');
+    instrument = instrumentButton.id;
     octaveDropdown.replaceChildren();
     naturalNotesCounter+=octavesInstrument*7;
     for (let i = 0; i<extraNotesInstrument; i++)
@@ -255,23 +255,26 @@ function addRung (i, notes, startingNoteIndex)
     for (let j = startingNoteIndex; j<(notes)+startingNoteIndex; j++)
     {
         let newRung = document.createElement('div');
-        newRung.classList.add('rung')
+        newRung.classList.add('rung');
         newRung.id = masterScale[i+Math.floor(j/12)][j%12];
         allRungsDiv.append(newRung);
         let shift = (97/naturalNotesCounter)*noteCounter;
         let perNoteShift = (97/naturalNotesCounter);
         newRung.style.width = `${perNoteShift*.9}%`;
         newRung.style.height = `${perNoteShift*3}vw`;
-        newRung.style.backgroundColor = color;
+        allRungsDiv.style.height = `${perNoteShift*3}vw`;
+        allRungsDiv.style.marginTop = `${perNoteShift*3}vw`;
+        newRung.classList.add(instrument);
         if (newRung.id.includes('b'))
         {
-            newRung.style.bottom = "1px";
+            newRung.style.bottom = `${perNoteShift*2.45}vw`;
             newRung.style.zIndex = "1";
-            newRung.style.left = `${shift-(.5*perNoteShift)}%`;
+            newRung.style.boxShadow = "2px 7px 2px";
+            newRung.style.left = `${shift-(.5*perNoteShift) + 1.5}%`;
         }
         else
         {
-            newRung.style.left = `${shift}%`;
+            newRung.style.left = `${shift + 1.5}%`;
             noteCounter++;
         }
     }
