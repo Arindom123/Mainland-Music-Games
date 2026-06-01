@@ -1,3 +1,23 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.scaleSelection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.playing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 #home-logo {
     width: 70px;
     height: auto;
@@ -13,11 +33,8 @@
 }
 .rung {
     position: absolute;
-    width: 70px;
-    height: 200px;
     border: 1px solid black;
     background: brown;
-    margin: 2px;
 }
 #allRungs {
     position: relative;
@@ -25,7 +42,7 @@
     margin-top: 175px;
 }
 .hidden {
-    display: none
+    display: none !important;
 }
 .scale-type button:disabled {
     background-color: aqua;
@@ -37,4 +54,16 @@
 }
 .selected {
     background: yellow;
+}
+.wrapper:hover button {
+    scale: 1.5;
+    transform: rotate(calc(360deg / var(--total-buttons) * var(--i))) translateY(-60px) rotate(calc(360deg / var(--total-buttons) * var(--i)))
+}
+.wrapper button{
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    transform: rotate(calc(360deg / var(--total-buttons) * var(--i))) translateY(10px);
+}
+.wrapper {
+    position: relative;
 }

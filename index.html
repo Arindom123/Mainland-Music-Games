@@ -20,19 +20,12 @@
             <h2>Percussion Family</h2>
         </div>
         <div class="instruments" id="instruments">
-            <button class="instruments" data-extraNotes="4" data-octaves="4" data-startingNote="A" id = "marimba" type="button">Marimba</button>
-            <button class="instruments" data-extraNotes="8" data-octaves="3" data-startingNote="F" id = "xylophone" type="button">Xylophone</button>
-            <button class="instruments" data-extraNotes="1" data-octaves="3" data-startingNote="F" id = "vibraphone" type="button">Vibraphone</button>
-            <button class="instruments" data-extraNotes="8"data-octaves="2" data-startingNote="F" id = "bells" type="button">Bells</button>
+            <button class="instruments" data-color = "blue" data-extraNotes="4" data-octaves="4" data-startingNote="A" id = "marimba" type="button">Marimba</button>
+            <button class="instruments" data-color = "red" data-extraNotes="8" data-octaves="3" data-startingNote="F" id = "xylophone" type="button">Xylophone</button>
+            <button class="instruments" data-color = "black" data-extraNotes="1" data-octaves="3" data-startingNote="F" id = "vibraphone" type="button">Vibraphone</button>
+            <button class="instruments" data-color = "green" data-extraNotes="8"data-octaves="2" data-startingNote="F" id = "bells" type="button">Bells</button>
         </div>
     </main>
-    <footer>
-        <p>By: Arindom Paul<br>Mainland Tri-M</p>
-        <a
-            href = "https://github.com/Arindom123" target = "_blank">
-            <img id = "github" src="assets/github-cat-black.png" alt="Check out my work!">
-        </a>
-    </footer>
 </div> <!--home div-->
     
 <div class="scaleSelection" id="scaleSelection">
@@ -63,32 +56,32 @@
     <div class="scales" id = "scales">
         <div class="wrapper" id = "majorWrapper">
             <h1>Major</h1>
-            <div id = "majorButtons">
-            <button id = "majorIonian" data-pattern="majorIonian" type="button">ionian</button>
-            <button id = "majorLydian" data-pattern="majorLydian" type="button">lydian</button>
-            <button id = "majorMixolydian" data-pattern="majorMixolydian" type="button">mixolydian</button>
-            <button id = "majorHarmonic" data-pattern="majorHarmonic" type="button">harmonic</button>
-            <button id = "majorPentatonic" data-pattern="majorPentatonic" type="button">pentatonic</button>
-            <button id = "majorBlues" data-pattern="majorBlues" type="button">blues</button>
+            <div style="--total-buttons: 6;" id = "majorButtons">
+            <button style="--i: 1;" id = "majorIonian" data-pattern="majorIonian" type="button">ionian</button>
+            <button style="--i: 2;" id = "majorLydian" data-pattern="majorLydian" type="button">lydian</button>
+            <button style="--i: 3;" id = "majorMixolydian" data-pattern="majorMixolydian" type="button">mixolydian</button>
+            <button style="--i: 4;" id = "majorHarmonic" data-pattern="majorHarmonic" type="button">harmonic</button>
+            <button style="--i: 5;" id = "majorPentatonic" data-pattern="majorPentatonic" type="button">pentatonic</button>
+            <button style="--i: 6;" id = "majorBlues" data-pattern="majorBlues" type="button">blues</button>
             </div>
         </div>
         <div class="wrapper" id = "minorWrapper">
             <h1>Minor</h1>
-            <div id = "minorButtons">
-            <button id = "minorAeolian" data-pattern="minorAeolian" type="button">aeolian</button>
-            <button id = "minorDorian" data-pattern="minorDorian" type="button">dorian</button>
-            <button id = "minorPhrygian" data-pattern="minorPhrygian" type="button">phrygian</button>
-            <button id = "minorMelodic" data-pattern="minorMelodic" type="button">melodic</button>
-            <button id = "minorHarmonic" data-pattern="minorHarmonic" type="button">harmonic</button>
-            <button id = "minorPentatonic" data-pattern="minorPentatonic" type="button">pentatonic</button>
-            <button id = "minorBlues" data-pattern="minorBlues" type="button">blues</button>
-            <button id = "minorLocrian" data-pattern="minorLocrian" type="button">locrian</button>
+            <div style="--total-buttons: 8;" id = "minorButtons">
+            <button style="--i: 1;" id = "minorAeolian" data-pattern="minorAeolian" type="button">aeolian</button>
+            <button style="--i: 2;" id = "minorDorian" data-pattern="minorDorian" type="button">dorian</button>
+            <button style="--i: 3;" id = "minorPhrygian" data-pattern="minorPhrygian" type="button">phrygian</button>
+            <button style="--i: 4;" id = "minorMelodic" data-pattern="minorMelodic" type="button">melodic</button>
+            <button style="--i: 5;" id = "minorHarmonic" data-pattern="minorHarmonic" type="button">harmonic</button>
+            <button style="--i: 6;" id = "minorPentatonic" data-pattern="minorPentatonic" type="button">pentatonic</button>
+            <button style="--i: 7;" id = "minorBlues" data-pattern="minorBlues" type="button">blues</button>
+            <button style="--i: 8;" id = "minorLocrian" data-pattern="minorLocrian" type="button">locrian</button>
             </div>
         </div>
-        <div class="wrapper" id = "otherWrapper">
+        <div style="--total-buttons: 1;" class="wrapper" id = "otherWrapper">
             <h1>Other</h1>
             <div id = "otherButtons">
-            <button id = "chromatic" data-pattern="chromatic" type="button">chromatic</button>
+            <button style="--i: 1;" id = "chromatic" data-pattern="chromatic" type="button">chromatic</button>
             </div>
         </div>
     </div>
@@ -106,5 +99,13 @@
 </div>
 <div id = "allRungs"></div>
 <script src="script.js"></script> <!--call .js-->
+
+<footer>
+    <p>By: Arindom Paul<br>Mainland Tri-M</p>
+    <a
+        href = "https://github.com/Arindom123" target = "_blank">
+        <img id = "github" src="assets/github-cat-black.png" alt="Check out my work!">
+    </a>
+</footer>
 </body>
 </html>

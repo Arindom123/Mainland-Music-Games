@@ -32,7 +32,8 @@ let octavesInstrument = null;
 let startingNoteInstrument = null;
 let extraNotesInstrument = null;
 let naturalNotesCounter = 0;
-let accidentalNotesCounter = 0;
+let noteCounter = 0;
+let color = null;
 
 function home ()
 {
@@ -208,7 +209,18 @@ function instantiateInstrumentButtons (instrumentButton)
     startingNote = instrumentButton.getAttribute('data-startingNote');
     octavesInstrument = +instrumentButton.getAttribute('data-octaves');
     extraNotesInstrument = +instrumentButton.getAttribute('data-extraNotes');
+    color = instrumentButton.getAttribute('data-color');
     octaveDropdown.replaceChildren();
+    naturalNotesCounter+=octavesInstrument*7;
+    for (let i = 0; i<extraNotesInstrument; i++)
+    {
+        let row = masterScale.findIndex(row => row.includes(startingNote));
+        let col = masterScale[row].indexOf(startingNote);
+        if (!masterScale[0][(col+i)%12].includes('b'))
+        {
+            naturalNotesCounter++;
+        }
+    }
     for (let i = 0; i<octavesInstrument-1; i++)
     {
         let octaveChoice = document.createElement('option');
@@ -218,7 +230,8 @@ function instantiateInstrumentButtons (instrumentButton)
     }
     octave = octaveDropdown.value;
     scaleSelection();
-    fillRungs(startingNote, octavesInstrument, extraNotesInstrument);
+    fillRungs(startingNote, octavesInstrument);
+    noteCounter = 0;
 });
 }
 
@@ -245,23 +258,21 @@ function addRung (i, notes, startingNoteIndex)
         newRung.classList.add('rung')
         newRung.id = masterScale[i+Math.floor(j/12)][j%12];
         allRungsDiv.append(newRung);
+        let shift = (97/naturalNotesCounter)*noteCounter;
+        let perNoteShift = (97/naturalNotesCounter);
+        newRung.style.width = `${perNoteShift*.9}%`;
+        newRung.style.height = `${perNoteShift*3}vw`;
+        newRung.style.backgroundColor = color;
         if (newRung.id.includes('b'))
         {
             newRung.style.bottom = "1px";
             newRung.style.zIndex = "1";
-            let shift = 76*accidentalNotesCounter + 37;
-            newRung.style.left = `${shift}px`;
-            accidentalNotesCounter++;
-            if (newRung.id.includes('Bb') || newRung.id.includes('Eb'))
-            {
-                accidentalNotesCounter++;
-            }
+            newRung.style.left = `${shift-(.5*perNoteShift)}%`;
         }
         else
         {
-            let shift = 76*naturalNotesCounter;
-            newRung.style.left += `${shift}px`;
-            naturalNotesCounter++;
+            newRung.style.left = `${shift}%`;
+            noteCounter++;
         }
     }
 }
