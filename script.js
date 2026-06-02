@@ -38,20 +38,25 @@ let instrument = null;
 function home ()
 {
     homeScreen.classList.remove('hidden');
+    startButton.classList.add('hidden');
     scaleSelectionScreen.classList.add('hidden');
     playingScreen.classList.add('hidden');
+    document.getElementById("controls").style.display = "none";
     allRungsDiv.classList.add('hidden');
+
+    clearInterval(play);
 }
 
 function scaleSelection ()
 {
     scaleButtons.forEach(enableButton);
     homeScreen.classList.add('hidden');
+    startButton.classList.remove('hidden');
     scaleSelectionScreen.classList.remove('hidden');
     playingScreen.classList.add('hidden');
-    startButton.textContent = "Play";
     allRungsDiv.classList.remove('hidden');
     startButton.disabled = true;
+    document.getElementById("controls").style.display = "none";
     previewCheckbox.checked = false;
 }
 
@@ -59,8 +64,8 @@ function playing ()
 {
     scaleSelectionScreen.classList.add('hidden');
     playingScreen.classList.remove('hidden');
-    startButton.classList.remove('hidden');
-    startButton.textContent = "Replay";
+    startButton.classList.add('hidden');
+    document.getElementById("controls").style.display = "";
     preview = false;
 }
 
@@ -85,12 +90,12 @@ scalePatternsMap.set("minorLocrian", [1, 2, 2, 1, 2, 2, 2]);
 scalePatternsMap.set("chromatic", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //other
 
 const masterScale = [
-    ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb","B"], 
-    ["C2", "Db2", "D2", "Eb2", "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2","B2"],
-    ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3","B3"],
-    ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4","B4"],
-    ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5","B5"],
-    ["C6", "Db6", "D6", "Eb6", "E6", "F6", "Gb6", "G6", "Ab6", "A6", "Bb6","B6"]
+    ["C", "C#/D♭", "D", "D#/E♭", "E", "F", "F#/G♭", "G", "G#/A♭", "A", "A#/B♭", "B"], 
+    ["C2", "C#2/D♭2", "D2", "D#2/E♭2", "E2", "F2", "F#2/G♭2", "G2", "G#2/A♭2", "A2", "A#2/B♭2", "B2"],
+    ["C3", "C#3/D♭3", "D3", "D#3/E♭3", "E3", "F3", "F#3/G♭3", "G3", "G#3/A♭3", "A3", "A#3/B♭3", "B3"],
+    ["C4", "C#4/D♭4", "D4", "D#4/E♭4", "E4", "F4", "F#4/G♭4", "G4", "G#4/A♭4", "A4", "A#4/B♭4", "B4"],
+    ["C5", "C#5/D♭5", "D5", "D#5/E♭5", "E5", "F5", "F#5/G♭5", "G5", "G#5/A♭5", "A5", "A#5/B♭5", "B5"],
+    ["C6", "C#6/D♭6", "D6", "D#6/E♭6", "E6", "F6", "F#6/G♭6", "G6", "G#6/A♭6", "A6", "A#6/B♭6", "B6"]
 ];
 
 rootDropdown.addEventListener("change", function()
@@ -165,7 +170,7 @@ metronomeStepper.addEventListener("change", function()
     }
     else
     {
-    tempo = Math.abs(tempoEntered - 10) < Math.abs(tempoEntered - 500) ? 1 : 500;
+    tempo = Math.abs(tempoEntered - 10) < Math.abs(tempoEntered - 500) ? 10 : 500;
     metronomeStepper.value = tempo
     }
 });
@@ -216,7 +221,7 @@ function instantiateInstrumentButtons (instrumentButton)
     {
         let row = masterScale.findIndex(row => row.includes(startingNote));
         let col = masterScale[row].indexOf(startingNote);
-        if (!masterScale[0][(col+i)%12].includes('b'))
+        if (!masterScale[0][(col+i)%12].includes('♭'))
         {
             naturalNotesCounter++;
         }
@@ -264,11 +269,12 @@ function addRung (i, notes, startingNoteIndex)
         newRung.style.height = `${perNoteShift*3}vw`;
         allRungsDiv.style.height = `${perNoteShift*3}vw`;
         allRungsDiv.style.marginTop = `${perNoteShift*3}vw`;
-        if (newRung.id.includes('b'))
+        allRungsDiv.style.marginBottom = `${perNoteShift*.3}vw`;
+        if (newRung.id.includes('♭'))
         {
             newRung.style.bottom = `${perNoteShift*2.45}vw`;
             newRung.style.zIndex = "1";
-            newRung.style.boxShadow = "2px 7px 2px";
+            newRung.style.boxShadow = "2px 7px 2px black";
             newRung.style.left = `${shift-(.5*perNoteShift) + 1.5}%`;
             newRung.classList.add(instrument + "Accidental");
         }
@@ -283,7 +289,7 @@ function addRung (i, notes, startingNoteIndex)
 
 function playScale (root, scalePattern, octave, preview)
 {
-    let timeout = (preview) ? 0 : 60000/tempo;
+    let timeout = (preview) ? 100 : 60000/tempo;
     const scaleAscending = generateScale(root, scalePattern, octave);
     scaleNameText.textContent = "Scale: " + root + " " + scaleName;
     const scaleDescending = scaleAscending.slice(0,-1).toReversed();

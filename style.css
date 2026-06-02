@@ -1,7 +1,18 @@
+@font-face {
+  font-family: 'notoSans';
+  src: url('/fonts/notoSans.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+:root {
+    background-color: rgb(34, 34, 34);
+    color: white;
+    font-family: 'notoSans', sans-serif;
+}
 .home {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    text-align: center;
 }
 .scaleSelection {
     display: flex;
@@ -13,30 +24,27 @@
     flex-direction: column;
     align-items: center;
 }
-.body {
+body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 #home-logo {
+    position: absolute;
     width: 70px;
     height: auto;
     cursor: pointer;
 }
 #github {
-    cursor: pointer;
     width: 70px;
     height: auto;
-}
-#instrument-selection {
-    cursor: pointer;
 }
 .rung {
     position: absolute;
     border: 1px solid black;
     background: brown;
     border-radius: 3px;
-    box-shadow: 1px 1px 1px;
+    box-shadow: 1px 1px 1px black;
 }
 #allRungs {
     position: relative;
@@ -45,16 +53,16 @@
 .hidden {
     display: none !important;
 }
-.scale-type button:disabled {
-    background-color: aqua;
-    box-shadow: none;
-    transform: translateY(1px);
+button:disabled {
+    color: rgb(0, 0, 0);
+    background-color: rgb(188, 188, 188);
+    opacity: 1.5;
 }
 #header {
     visibility: hidden;
 }
 .selected {
-    background: yellow !important;
+    background: rgb(225, 225, 66) !important;
 }
 .marimbaNatural {
     background: linear-gradient(rgb(227, 112, 112), maroon);
@@ -79,4 +87,57 @@
 }
 .vibraphoneAccidental {
     background: linear-gradient(grey, rgb(212,212,212));
+}
+button, select, input {
+    color: rgb(86, 86, 86);
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+    
+}
+button:not(:disabled):hover {
+    cursor: pointer;
+    color: black;
+    box-shadow: 0px 0px 5px white;
+}
+.start {
+    position: absolute;
+    min-width: 100%;
+    bottom: -30px;
+    display: flex;
+    justify-content: center;
+}
+.credits {
+    display: flex;
+    flex-direction: row;
+    translate: 8px;
+}
+footer {
+    margin-top: auto;
+    width: 100%;
+}
+.instruments {
+    font-size: 3rem;
+    padding: 1em 1.3em;
+}
+.startRungs {
+    position: relative;
+}
+.scales {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    gap: 40px;
+}
+.preview {
+    margin-top: 25px;
+}
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+#note {
+    line-height: 40px;
 }

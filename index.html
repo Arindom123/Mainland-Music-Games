@@ -30,82 +30,94 @@
     
 <div class="scaleSelection" id="scaleSelection">
     <h1>Scales</h1>
-    <label for="roots">Root:</label>
-    <select name="root" id="root">
-        <option value="A">A</option>
-        <option value="Bb">A#/B♭</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="Db">C#/D♭</option>
-        <option value="D">D</option>
-        <option value="Eb">D#/E♭</option>
-        <option value="E">E</option>
-        <option value="F">F</option>
-        <option value="Gb">F#/G♭</option>
-        <option value="G">G</option>
-        <option value="Ab">G#/A♭</option>
-    </select>
-    <label for="octave">Octave(s):</label>
-    <select name="octave" id="octave">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
+    <div class="rootsOctaves">
+        <label for="roots">Root:</label>
+        <select name="root" id="root">
+            <option value="A">A</option>
+            <option value="A#/B♭">A#/B♭</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="C#/D♭">C#/D♭</option>
+            <option value="D">D</option>
+            <option value="D#/E♭">D#/E♭</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#/G♭">F#/G♭</option>
+            <option value="G">G</option>
+            <option value="G#/A♭">G#/A♭</option>
+        </select>
+        <label for="octave">Octave(s):</label>
+        <select name="octave" id="octave">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
     <div class="scales" id = "scales">
         <div class="wrapper" id = "majorWrapper">
             <h1>Major</h1>
-            <div style="--total-buttons: 6;" id = "majorButtons">
-            <button style="--i: 1;" id = "majorIonian" data-pattern="majorIonian" type="button">ionian</button>
-            <button style="--i: 2;" id = "majorLydian" data-pattern="majorLydian" type="button">lydian</button>
-            <button style="--i: 3;" id = "majorMixolydian" data-pattern="majorMixolydian" type="button">mixolydian</button>
-            <button style="--i: 4;" id = "majorHarmonic" data-pattern="majorHarmonic" type="button">harmonic</button>
-            <button style="--i: 5;" id = "majorPentatonic" data-pattern="majorPentatonic" type="button">pentatonic</button>
-            <button style="--i: 6;" id = "majorBlues" data-pattern="majorBlues" type="button">blues</button>
+            <div id = "majorButtons">
+            <button id = "majorIonian" data-pattern="majorIonian" type="button">ionian</button>
+            <button id = "majorLydian" data-pattern="majorLydian" type="button">lydian</button>
+            <button id = "majorMixolydian" data-pattern="majorMixolydian" type="button">mixolydian</button>
+            <button id = "majorHarmonic" data-pattern="majorHarmonic" type="button">harmonic</button>
+            <button id = "majorPentatonic" data-pattern="majorPentatonic" type="button">pentatonic</button>
+            <button id = "majorBlues" data-pattern="majorBlues" type="button">blues</button>
             </div>
         </div>
         <div class="wrapper" id = "minorWrapper">
             <h1>Minor</h1>
-            <div style="--total-buttons: 8;" id = "minorButtons">
-            <button style="--i: 1;" id = "minorAeolian" data-pattern="minorAeolian" type="button">aeolian</button>
-            <button style="--i: 2;" id = "minorDorian" data-pattern="minorDorian" type="button">dorian</button>
-            <button style="--i: 3;" id = "minorPhrygian" data-pattern="minorPhrygian" type="button">phrygian</button>
-            <button style="--i: 4;" id = "minorMelodic" data-pattern="minorMelodic" type="button">melodic</button>
-            <button style="--i: 5;" id = "minorHarmonic" data-pattern="minorHarmonic" type="button">harmonic</button>
-            <button style="--i: 6;" id = "minorPentatonic" data-pattern="minorPentatonic" type="button">pentatonic</button>
-            <button style="--i: 7;" id = "minorBlues" data-pattern="minorBlues" type="button">blues</button>
-            <button style="--i: 8;" id = "minorLocrian" data-pattern="minorLocrian" type="button">locrian</button>
+            <div id = "minorButtons">
+            <button id = "minorAeolian" data-pattern="minorAeolian" type="button">aeolian</button>
+            <button id = "minorDorian" data-pattern="minorDorian" type="button">dorian</button>
+            <button id = "minorPhrygian" data-pattern="minorPhrygian" type="button">phrygian</button>
+            <button id = "minorMelodic" data-pattern="minorMelodic" type="button">melodic</button>
+            <button id = "minorHarmonic" data-pattern="minorHarmonic" type="button">harmonic</button>
+            <button id = "minorPentatonic" data-pattern="minorPentatonic" type="button">pentatonic</button>
+            <button id = "minorBlues" data-pattern="minorBlues" type="button">blues</button>
+            <button id = "minorLocrian" data-pattern="minorLocrian" type="button">locrian</button>
             </div>
         </div>
-        <div style="--total-buttons: 1;" class="wrapper" id = "otherWrapper">
+        <div class="wrapper" id = "otherWrapper">
             <h1>Other</h1>
             <div id = "otherButtons">
             <button style="--i: 1;" id = "chromatic" data-pattern="chromatic" type="button">chromatic</button>
             </div>
         </div>
     </div>
-    <input type="checkbox" id="preview" name="preview">
-    <label for="preview">Preview Scale</label>
-    <h1 id = "selectScale">Please select a scale</h1>
-    <button id = "startButton" type ="button">Start</button>
+    <h1 id = "selectScale">Select a scale</h1>
+    <div class="preview" >
+        <input type="checkbox" id="preview" name="preview">
+        <label for="preview">Preview Scale</label>
+    </div>
 </div>
 <div class="playing" id="playing">
-    <button id = "backButton" type ="button">Back</button>
     <h1 id = "scaleName">Current Scale: </h1>
-    <button id = "replayButton" type ="button">Replay</button>
     <h2 id = "note">Note: </h2>
     <label><input type="number" id="metronome" name="metronome" min="10" max="500" value="80"> bpm (10-500)</label>
 </div>
-<div id = "allRungs"></div>
+<div class = "startRungs">
+    <div id = "allRungs"></div>
+    <div class = "start">
+        <button id = "startButton" type ="button">Start</button>
+    </div>
+</div>
+<div class = "controls" id = "controls">
+    <button id = "backButton" type ="button">Back</button>
+    <button id = "replayButton" type ="button">Replay</button>
+</div>
 <script src="script.js"></script> <!--call .js-->
 
 <footer>
-    <p>By: Arindom Paul<br>Mainland Tri-M</p>
-    <a
-        href = "https://github.com/Arindom123" target = "_blank">
-        <img id = "github" src="assets/github-cat-black.png" alt="Check out my work!">
-    </a>
+    <div class="credits">
+        <p>Arindom Paul<br>Mainland Tri-M</p>
+        <a
+            href = "https://github.com/Arindom123" target = "_blank">
+            <img id = "github" src="assets/github-cat-white.png" alt="Check out my work!">
+        </a>
+    </div>
 </footer>
 </body>
 </html>
